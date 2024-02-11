@@ -7,11 +7,15 @@ from nautobot.dcim.models.devices import Device, DeviceRedundancyGroup, DeviceTy
 class GetHostnames(Job):
     """ Example job definition """
 
+    tenant = ObjectVar (
+        tenant=Tenant
+    )
+    
     devices = MultiObjectVar (
         model=Device,
         query_params={
             'status': 'Active',
-            'tenant': "Lab01"
+            'tenant': "$tenant"
         }
     )
 
