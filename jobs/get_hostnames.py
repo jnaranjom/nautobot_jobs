@@ -1,7 +1,7 @@
 """ GET HOSTNAME OF ALL DEVICES """
 
 import os
-from nautobot.apps.jobs import Job, MultiObjectVar, register_jobs
+from nautobot.apps.jobs import Job, MultiObjectVar
 from nautobot.dcim.models.devices import Device, DeviceRedundancyGroup, DeviceType, Manufacturer, Platform, VirtualChassis
 
 class GetHostnames(Job):
@@ -24,5 +24,3 @@ class GetHostnames(Job):
         """ Main function """
         for device in devices:
             self.logger.info(f"{device.role}")
-
-register_jobs(GetHostnames)
