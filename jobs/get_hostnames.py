@@ -11,7 +11,7 @@ class GetHostnames(Job):
         model=Device,
         query_params={
             'status': 'Active',
-            'tenant': "Lab 01"
+            'tenant': "Lab01"
         }
     )
 
