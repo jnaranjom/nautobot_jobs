@@ -25,6 +25,7 @@ class GetHostnames(Job):
         for device in devices:
             self.logger.info(f"{device.name}: {device.role}")
             self.logger.info(f"{device.name}: {device.platform}")
+            self.logger.info(f"{device.name}: {device.interfaces}")
             if device.primary_ip4:
                 self.logger.info(f"{device.name}: {device.primary_ip4}")
             else:
