@@ -10,7 +10,8 @@ class GetHostnames(Job):
     devices = MultiObjectVar (
         model=Device,
         query_params={
-            'status': 'Active'
+            'status': 'Active',
+            'role': 'edge'
         }
     )
 
