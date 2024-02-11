@@ -2,6 +2,7 @@
 
 import os
 from nautobot.apps.jobs import Job, MultiObjectVar, ObjectVar
+from nautobot.tenancy.models import Tenant
 from nautobot.dcim.models.devices import Device, DeviceRedundancyGroup, DeviceType, Manufacturer, Platform, VirtualChassis
 
 class GetHostnames(Job):
