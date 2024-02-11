@@ -24,3 +24,5 @@ class GetHostnames(Job):
         """ Main function """
         for device in devices:
             self.logger.info(f"{device.role}")
+
+register_jobs(GetHostnames)
