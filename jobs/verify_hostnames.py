@@ -15,7 +15,7 @@
 """
 
 import re
-from nautobot.extras.jobs import Job, StringVar, MultiObjectVar
+from nautobot.extras.jobs import Job, StringVar, MultiObjectVar, register_jobs
 from nautobot.dcim.models import Device, DeviceRole, DeviceType, Site
 
 
@@ -92,3 +92,5 @@ class VerifyHostnames(Job):
                 self.log_success(obj=device, message="Hostname is compliant.")
             else:
                 self.log_failure(obj=device, message="Hostname is not compliant.")
+
+register_jobs(VerifyHostnames)
