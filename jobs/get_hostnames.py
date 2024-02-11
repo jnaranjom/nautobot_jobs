@@ -23,4 +23,5 @@ class GetHostnames(Job):
     def run(self, devices):
         """ Main function """
         for device in devices:
-            self.logger.info(f"{device.role}")
+            self.logger.info(f"{device.name}: {device.role}")
+            self.logger.info(f"{device.name}: {device.platform}")
