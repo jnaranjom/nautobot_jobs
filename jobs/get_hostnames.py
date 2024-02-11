@@ -9,7 +9,7 @@ class GetHostnames(Job):
     """ Example job definition """
 
     tenant = ObjectVar (
-        tenant=Tenant
+        model=Tenant
     )
     
     devices = MultiObjectVar (
