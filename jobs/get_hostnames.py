@@ -17,7 +17,7 @@ class GetHostnames(Job):
     class Meta:
         """ Jobs Metadata """
         name = "Get Hostnames"
-        description = "Description of Get Hostnames job"
+        description = "Job to retrieve devices Role"
         dryrun_default = True
 
     def run(self, devices):
