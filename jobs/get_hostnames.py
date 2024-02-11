@@ -26,7 +26,7 @@ class GetHostnames(Job):
         description = "Job to retrieve devices Role"
         dryrun_default = True
 
-    def run(self, devices):
+    def run(self, devices, tenant):
         """ Main function """
         for device in devices:
             self.logger.info(f"{device.name}: {device.role}")
