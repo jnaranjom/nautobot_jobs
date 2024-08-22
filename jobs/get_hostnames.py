@@ -5,6 +5,7 @@ from nautobot.apps.jobs import Job, MultiObjectVar, ObjectVar, register_jobs
 from nautobot.tenancy.models import Tenant
 from nautobot.dcim.models.devices import Device
 
+name = "Network Automation Get Device list"
 class GetHostnames(Job):
     """ Example job definition """
 
@@ -36,5 +37,3 @@ class GetHostnames(Job):
                 self.logger.info(f"{device.name}: {device.primary_ip4}")
             else:
                 self.logger.info(f"Unable to find Primary IPv4 for {device.name} ")
-
-register_jobs(GetHostnames)
