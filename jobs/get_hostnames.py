@@ -37,4 +37,3 @@ class GetHostnames(Job):
             else:
                 self.logger.info(f"Unable to find Primary IPv4 for {device.name} ")
 
-register_jobs(GetHostnames)
