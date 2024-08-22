@@ -5,6 +5,7 @@ from nautobot.tenancy.models import Tenant
 from nautobot.dcim.models.devices import Device
 
 name = "Network Automation Get Device list"
+
 class GetHostnames(Job):
     """ Example job definition """
 
