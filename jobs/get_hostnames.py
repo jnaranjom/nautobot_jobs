@@ -23,11 +23,12 @@ class GetHostnames(Job):
 
     def run(self, devices):
         """Main function"""
-        for device in devices:
-            self.logger.info(f"{device.name}: {device.role}")
-            self.logger.info(f"{device.name}: {device.platform}")
-            self.logger.info(f"{device.name}: {device.status}")
-            if device.primary_ip4:
-                self.logger.info(f"{device.name}: {device.primary_ip4}")
-            else:
-                self.logger.info(f"Unable to find Primary IPv4 for {device.name} ")
+        self.logger.info(f"TEST")
+#        for device in devices:
+#            self.logger.info(f"{device.name}: {device.role}")
+#           self.logger.info(f"{device.name}: {device.platform}")
+#            self.logger.info(f"{device.name}: {device.status}")
+#            if device.primary_ip4:
+#                self.logger.info(f"{device.name}: {device.primary_ip4}")
+#            else:
+#                self.logger.info(f"Unable to find Primary IPv4 for {device.name} ")
