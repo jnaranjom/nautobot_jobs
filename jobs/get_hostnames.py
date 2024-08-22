@@ -11,7 +11,7 @@ class GetHostnames(Job):
     tenant = ObjectVar(model=Tenant)
 
     devices = MultiObjectVar(
-        model=Device, query_params={"status": "Active", "tenant": tenant}
+        model=Device, query_params={"status": "Active", "tenant": "$tenant"}
     )
 
     class Meta:
