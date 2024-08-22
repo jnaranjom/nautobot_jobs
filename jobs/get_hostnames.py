@@ -4,8 +4,6 @@ from nautobot.apps.jobs import Job, MultiObjectVar, ObjectVar
 from nautobot.tenancy.models import Tenant
 from nautobot.dcim.models.devices import Device
 
-name = "Network Automation Get Device list"
-
 class GetHostnames(Job):
     """ Example job definition """
 
@@ -24,7 +22,7 @@ class GetHostnames(Job):
     class Meta:
         """ Jobs Metadata """
         name = "Get Hostnames"
-        description = "Job to retrieve devices Role"
+        description = "Job to retrieve device info"
         dryrun_default = True
 
     def run(self, devices, tenant):
