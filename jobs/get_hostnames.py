@@ -3,7 +3,7 @@
 import os
 from nautobot.apps.jobs import Job, MultiObjectVar, ObjectVar, register_jobs
 from nautobot.tenancy.models import Tenant
-from nautobot.dcim.models.devices import Device, DeviceRedundancyGroup, DeviceType, Manufacturer, Platform, VirtualChassis
+from nautobot.dcim.models.devices import Device
 
 class GetHostnames(Job):
     """ Example job definition """
