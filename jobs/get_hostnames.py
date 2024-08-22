@@ -4,29 +4,25 @@ from nautobot.apps.jobs import Job, MultiObjectVar, ObjectVar
 from nautobot.tenancy.models import Tenant
 from nautobot.dcim.models.devices import Device
 
-class GetHostnames(Job):
-    """ Example job definition """
 
-    tenant = ObjectVar (
-        model=Tenant
-    )
-    
-    devices = MultiObjectVar (
-        model=Device,
-        query_params={
-            'status': 'Active',
-            'tenant': "$tenant"
-        }
+class GetHostnames(Job):
+    """Example job definition"""
+
+    tenant = ObjectVar(model=Tenant)
+
+    devices = MultiObjectVar(
+        model=Device, query_params={"status": "Active", "tenant": tenant}
     )
 
     class Meta:
-        """ Jobs Metadata """
+        """Jobs Metadata"""
+
         name = "Get Hostnames"
         description = "Job to retrieve device info"
         dryrun_default = True
 
-    def run(self, devices, tenant):
-        """ Main function """
+    def run(self, devices):
+        """Main function"""
         for device in devices:
             self.logger.info(f"{device.name}: {device.role}")
             self.logger.info(f"{device.name}: {device.platform}")
