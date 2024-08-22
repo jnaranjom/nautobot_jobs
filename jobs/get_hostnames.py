@@ -29,7 +29,7 @@ class GetHostnames(Job):
         """
 
         for device in devices:
-            self.logger.info(f'%s', device.name)
+            self.logger.info("%s", device.name)
             # self.logger.info(f'{device.name}: {device.platform}')
             # self.logger.info(f'{device.name}: {device.status}')
             # if device.primary_ip4:
