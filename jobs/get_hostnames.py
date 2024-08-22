@@ -1,7 +1,7 @@
 """ GET HOSTNAME OF ALL DEVICES """
 
 import os
-from nautobot.apps.jobs import Job, MultiObjectVar, ObjectVar
+from nautobot.apps.jobs import Job, MultiObjectVar, ObjectVar,register_jobs
 from nautobot.tenancy.models import Tenant
 from nautobot.dcim.models.devices import Device, DeviceRedundancyGroup, DeviceType, Manufacturer, Platform, VirtualChassis
 
@@ -37,3 +37,4 @@ class GetHostnames(Job):
             else:
                 self.logger.info(f"Unable to find Primary IPv4 for {device.name} ")
 
+register_jobs(GetHostnames)
