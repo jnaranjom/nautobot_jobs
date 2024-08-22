@@ -36,3 +36,5 @@ class GetHostnames(Job):
                 self.logger.info(f"{device.name}: {device.primary_ip4}")
             else:
                 self.logger.info(f"Unable to find Primary IPv4 for {device.name} ")
+
+register_jobs(GetHostnames)
