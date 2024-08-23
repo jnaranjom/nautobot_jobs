@@ -1,4 +1,4 @@
-""" GET HOSTNAME OF ALL DEVICES """
+""" GET HOSTNAME OF ALL DEVICES FOR A TENANT """
 
 from nautobot.apps.jobs import Job, ObjectVar, MultiObjectVar, register_jobs
 from nautobot.tenancy.models import Tenant
