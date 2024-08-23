@@ -21,7 +21,7 @@ class GetHostnames(Job):
         description = "Job to retrieve device info"
         dryrun_default = True
 
-    def run(self, devices):
+    def run(self, devices, tenant):
         """_summary_
 
         Args:
