@@ -1,11 +1,11 @@
-""" GET HOSTNAME OF ALL DEVICES FOR A TENANT """
+""" GET DEVICES DETAILS FROM A TENANT """
 
 from nautobot.apps.jobs import Job, ObjectVar, MultiObjectVar, register_jobs
 from nautobot.tenancy.models import Tenant
 from nautobot.dcim.models.devices import Device
 
 
-class GetHostnames(Job):
+class DeviceDetails(Job):
     """Example job definition"""
 
     tenant = ObjectVar(model=Tenant)
@@ -17,8 +17,8 @@ class GetHostnames(Job):
     class Meta:
         """Jobs Metadata"""
 
-        name = "Get Hostnames"
-        description = "Job to retrieve device info"
+        name = "Get Device Details"
+        description = "Job to retrieve device details"
         dryrun_default = True
 
     def run(self, devices, tenant):
@@ -38,4 +38,4 @@ class GetHostnames(Job):
                 self.logger.info(f'Unable to find Primary IPv4 for {device.name}')
 
 
-register_jobs(GetHostnames)
+register_jobs(DeviceDetails)
