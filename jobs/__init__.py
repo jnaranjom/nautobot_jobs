@@ -1,6 +1,4 @@
-""" REGISTER JOBS HERE """
+"""_summary_
+"""
 
-from nautobot.apps.jobs import register_jobs
-from .get_hostnames import GetHostnames
-
-register_jobs(GetHostnames)
+from .get_device_details import GetHostnames
