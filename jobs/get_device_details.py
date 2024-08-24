@@ -2,6 +2,7 @@
 
 from nautobot.apps.jobs import Job, ObjectVar, MultiObjectVar, register_jobs
 from nautobot.tenancy.models import Tenant
+from nautobot.extras.models import Status
 from nautobot.dcim.models.devices import Device
 
 
@@ -10,10 +11,13 @@ class DeviceDetails(Job):
 
     tenant = ObjectVar(model=Tenant)
 
+    status = ObjectVar(Model=Status)
+    
     devices = MultiObjectVar(
-        model=Device, query_params={"tenant": "$tenant"}
+        model=Device, query_params={"status": "$status", "tenant": "$tenant"}
     )
-
+    
+    
     class Meta:
         """Jobs Metadata"""
 
@@ -21,7 +25,7 @@ class DeviceDetails(Job):
         description = "Job to retrieve device details"
         dryrun_default = True
 
-    def run(self, devices, tenant):
+    def run(self, tenant, status, devices):
         """_summary_
 
         Args:
