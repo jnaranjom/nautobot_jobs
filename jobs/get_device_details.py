@@ -32,6 +32,7 @@ class DeviceDetails(Job):
             self.logger.info("%s", device.name)
             self.logger.info(f"{device.name}: {device.platform}")
             self.logger.info(f"{device.name}: {device.status}")
+            self.logger.info(f"{device.name}: {device.location}")
             if device.primary_ip4:
                 self.logger.info(f"{device.name}: {device.primary_ip4}")
             else:
