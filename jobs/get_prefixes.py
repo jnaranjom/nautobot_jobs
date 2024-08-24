@@ -2,6 +2,8 @@
 
 from nautobot.apps.jobs import Job, ObjectVar, MultiObjectVar, register_jobs
 from nautobot.ipam.models import IPAddress, Prefix
+from netaddr import *
+import pprint
 
 
 class PrefixDetails(Job):
@@ -22,8 +24,10 @@ class PrefixDetails(Job):
         Args:
             Prefixs (_type_): _description_
         """
-
-        self.logger.info("%s", prefix)
+        network = IPNetwork(prefix)
+        self.logger.info("%s", network.network)
+        self.logger.info("%s", network.netmask)
+        self.logger.info("%s", network.size)
 
 
 register_jobs(PrefixDetails)
