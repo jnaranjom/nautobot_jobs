@@ -11,9 +11,9 @@ class PrefixDetails(Job):
 
     tenant = ObjectVar(model=Tenant)
 
-    role = ObjectVar(model=Role, query_params={"tenant": "$tenant"})
+    role = ObjectVar(model=Role)
 
-    prefix = ObjectVar(model=Prefix, query_params={"role": "$role"})
+    prefix = ObjectVar(model=Prefix, query_params={"tenant": "$tenant"})
 
     class Meta:
         """Jobs Metadata"""
