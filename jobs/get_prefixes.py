@@ -10,7 +10,7 @@ class PrefixDetails(Job):
 
     role = ObjectVar(model=Role)
 
-    prefix = ObjectVar(model=Prefix, query_params={"role": "$role"})
+    prefixes = MultiObjectVar(model=Prefix, query_params={"role": "$role"})
 
     class Meta:
         """Jobs Metadata"""
@@ -19,14 +19,15 @@ class PrefixDetails(Job):
         description = "Job to retrieve Prefix details"
         dryrun_default = True
 
-    def run(self, role, prefix):
+    def run(self, role, prefixes):
         """_summary_
 
         Args:
             Prefixs (_type_): _description_
         """
         self.logger.info("Role: %s", role)
-        self.logger.info("Prefix: %s", prefix)
+        for prefix in prefixes:
+            self.logger.info("Prefix: %s", prefix)
 
 
 register_jobs(PrefixDetails)
