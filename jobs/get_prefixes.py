@@ -2,14 +2,14 @@
 
 from nautobot.apps.jobs import Job, ObjectVar, MultiObjectVar, register_jobs
 from nautobot.ipam.models import IPAddress, Prefix
-from netaddr import *
-import pprint
+from nautobot.extras.models import Status, Role
 
 
 class PrefixDetails(Job):
     """Example job definition"""
 
-    prefix = ObjectVar(model=Prefix, query_params={"role": "datacenter:p2p:prefix"})
+    role = ObjectVar(model=Role)
+    prefix = ObjectVar(model=Prefix, query_params={"role": "$role"})
 
     class Meta:
         """Jobs Metadata"""
