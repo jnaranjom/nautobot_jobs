@@ -24,10 +24,6 @@ class PrefixDetails(Job):
         Args:
             Prefixs (_type_): _description_
         """
-        network = IPNetwork(prefix)
-        self.logger.info("%s", network.network)
-        self.logger.info("%s", network.netmask)
-        self.logger.info("%s", network.size)
-
+        self.logger.info("%s", prefix)
 
 register_jobs(PrefixDetails)
