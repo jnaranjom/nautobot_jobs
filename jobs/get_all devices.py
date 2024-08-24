@@ -9,9 +9,6 @@ class AllDevices(Job):
 
     devices = Device.objects.all()
 
-    for device in devices:
-        self.logger.info("%s", device.name)
-
     class Meta:
         """Jobs Metadata"""
 
