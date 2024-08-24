@@ -7,7 +7,7 @@ from nautobot.ipam.models import IPAddress, Prefix
 class PrefixDetails(Job):
     """Example job definition"""
 
-    prefixes = ObjectVar(model=Prefix)
+    prefix = ObjectVar(model=Prefix)
 
     class Meta:
         """Jobs Metadata"""
@@ -22,8 +22,8 @@ class PrefixDetails(Job):
         Args:
             Prefixs (_type_): _description_
         """
-        for prefix in prefixes:
-            self.logger.info("%s", prefix)
+
+        self.logger.info("%s", prefix)
 
 
 register_jobs(PrefixDetails)
