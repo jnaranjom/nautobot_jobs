@@ -7,7 +7,7 @@ from nautobot.dcim.models.devices import Device
 class AllDevices(Job):
     """Example job definition"""
 
-    devices = Devices.objects.all()
+    devices = Device.objects.all()
 
     for device in devices:
         self.logger.info("%s", device.name)
