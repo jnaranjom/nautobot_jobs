@@ -16,7 +16,7 @@ class PrefixDetails(Job):
         description = "Job to retrieve Prefix details"
         dryrun_default = True
 
-    def run(self, prefixes):
+    def run(self, prefix):
         """_summary_
 
         Args:
