@@ -1,4 +1,4 @@
-""" GET DEVICE DETAILS IN SPECIFIC LOCATION """
+""" GET all devices """
 
 from nautobot.apps.jobs import Job, register_jobs
 from nautobot.dcim.models.devices import Device
@@ -12,7 +12,7 @@ class AllDevices(Job):
     class Meta:
         """Jobs Metadata"""
 
-        name = "Get Device Details for a location"
+        name = "Get All devices"
         description = "Job to retrieve device details"
         dryrun_default = True
 
