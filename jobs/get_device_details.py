@@ -11,7 +11,7 @@ class DeviceDetails(Job):
 
     tenant = ObjectVar(model=Tenant)
 
-    status = ObjectVar(Model=Status)
+    status = ObjectVar(model=Status)
     
     devices = MultiObjectVar(
         model=Device, query_params={"status": "$status", "tenant": "$tenant"}
