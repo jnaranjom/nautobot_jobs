@@ -19,7 +19,7 @@ class LocationDevices(Job):
         description = "Job to retrieve device details"
         dryrun_default = True
 
-    def run(self, tenant, status, devices):
+    def run(self, location, devices):
         """_summary_
 
         Args:
@@ -30,7 +30,6 @@ class LocationDevices(Job):
             self.logger.info("%s", device.name)
             self.logger.info(f"Platform: {device.platform}")
             self.logger.info(f"Status: {device.status}")
-            self.logger.info(f"Location: {device.location}")
             self.logger.info(f"Role: {device.role}")
             if device.primary_ip4:
                 self.logger.info(f"{device.name}: {device.primary_ip4}")
