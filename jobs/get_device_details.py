@@ -30,9 +30,10 @@ class DeviceDetails(Job):
 
         for device in devices:
             self.logger.info("%s", device.name)
-            self.logger.info(f"{device.name}: {device.platform}")
-            self.logger.info(f"{device.name}: {device.status}")
-            self.logger.info(f"{device.name}: {device.location}")
+            self.logger.info(f"Platform: {device.platform}")
+            self.logger.info(f"Status: {device.status}")
+            self.logger.info(f"Location: {device.location}")
+            self.logger.info(f"Role: {device.role}")
             if device.primary_ip4:
                 self.logger.info(f"{device.name}: {device.primary_ip4}")
             else:
