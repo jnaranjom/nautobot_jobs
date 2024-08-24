@@ -1,26 +1,21 @@
-""" GET DEVICES DETAILS FROM A TENANT """
+""" GET DEVICES IN SPECIFIC LOCATION """
 
 from nautobot.apps.jobs import Job, ObjectVar, MultiObjectVar, register_jobs
-from nautobot.tenancy.models import Tenant
-from nautobot.extras.models import Status
+from nautobot.dcim.models.locations import Location, LocationType
 from nautobot.dcim.models.devices import Device
 
 
-class DeviceDetails(Job):
+class LocationDevices(Job):
     """Example job definition"""
 
-    tenant = ObjectVar(model=Tenant)
+    location = ObjectVar(model=Location)
 
-    status = ObjectVar(model=Status)
-
-    devices = MultiObjectVar(
-        model=Device, query_params={"status": "$status", "tenant": "$tenant"}
-    )
+    devices = MultiObjectVar(model=Device, query_params={"location": "$location"})
 
     class Meta:
         """Jobs Metadata"""
 
-        name = "Get Device Details"
+        name = "Get Devices Details for a location"
         description = "Job to retrieve device details"
         dryrun_default = True
 
@@ -43,4 +38,4 @@ class DeviceDetails(Job):
                 self.logger.info(f"Unable to find Primary IPv4 for {device.name}")
 
 
-register_jobs(DeviceDetails)
+register_jobs(LocationDevices)
