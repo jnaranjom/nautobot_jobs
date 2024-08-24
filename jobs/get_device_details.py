@@ -30,12 +30,12 @@ class DeviceDetails(Job):
 
         for device in devices:
             self.logger.info("%s", device.name)
-            self.logger.info(f'{device.name}: {device.platform}')
-            self.logger.info(f'{device.name}: {device.status}')
+            self.logger.info(f"{device.name}: {device.platform}")
+            self.logger.info(f"{device.name}: {device.status}")
             if device.primary_ip4:
-                self.logger.info(f'{device.name}: {device.primary_ip4}')
+                self.logger.info(f"{device.name}: {device.primary_ip4}")
             else:
-                self.logger.info(f'Unable to find Primary IPv4 for {device.name}')
+                self.logger.info(f"Unable to find Primary IPv4 for {device.name}")
 
 
 register_jobs(DeviceDetails)
