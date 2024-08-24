@@ -9,7 +9,7 @@ import pprint
 class PrefixDetails(Job):
     """Example job definition"""
 
-    prefix = ObjectVar(model=Prefix)
+    prefix = ObjectVar(model=Prefix, query_params={"role": "datacenter:p2p:prefix"})
 
     class Meta:
         """Jobs Metadata"""
@@ -25,5 +25,6 @@ class PrefixDetails(Job):
             Prefixs (_type_): _description_
         """
         self.logger.info("%s", prefix)
+
 
 register_jobs(PrefixDetails)
