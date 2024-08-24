@@ -7,7 +7,7 @@ from nautobot.dcim.models.devices import Device
 class AllDevices(Job):
     """Example job definition"""
 
-    devices = Device.objects.all()
+    mydevices = Device.objects.all()
 
     class Meta:
         """Jobs Metadata"""
@@ -16,14 +16,14 @@ class AllDevices(Job):
         description = "Job to retrieve device details"
         dryrun_default = True
 
-    def run(self, devices):
+    def run(self, mydevices):
         """_summary_
 
         Args:
             devices (_type_): _description_
         """
 
-        for device in devices:
+        for device in mydevices:
             self.logger.info("%s", device.name)
 
 register_jobs(AllDevices)
