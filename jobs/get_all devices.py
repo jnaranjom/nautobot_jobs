@@ -24,5 +24,6 @@ class AllDevices(Job):
 
         for device in mydevices:
             self.logger.info("%s", device.name)
+            self.logger.info("%s", device.manufacturer)
 
 register_jobs(AllDevices)
