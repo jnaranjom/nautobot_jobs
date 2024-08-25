@@ -2,8 +2,6 @@
 
 from nautobot.apps.jobs import Job, register_jobs
 from nautobot.dcim.models.devices import Device
-from nautobot.ipam.models import Prefix
-
 
 class AllDevices(Job):
     """Example job definition"""
@@ -22,13 +20,15 @@ class AllDevices(Job):
             devices (_type_): _description_
         """
         mydevices = Device.objects.all()
-        myprefixes = Prefix.objects.all()
 
         for device in mydevices:
-            self.logger.info("%s", device.name)
+            if device.device_type.manufacturer.name == 'Cisco':
+                self.logger.info("Cisco: %s", device.name)
+            elif device.device_type.manufacturer.name == 'Arista':
+                self.logger.info("Arista: %s", device.name)
+            else:
+                self.logger.info("Unknown: %s", device.name)
 
-        for prefix in myprefixes:
-            self.logger.info("%s", prefix)
 
 
 register_jobs(AllDevices)
