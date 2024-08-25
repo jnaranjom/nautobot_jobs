@@ -27,7 +27,8 @@ class AllDevices(Job):
         for device in mydevices:
             self.logger.info("%s", device.name)
 
-        for prefix in prefixes:
+        for prefix in myprefixes:
             self.logger.info("%s", prefix)
+
 
 register_jobs(AllDevices)
