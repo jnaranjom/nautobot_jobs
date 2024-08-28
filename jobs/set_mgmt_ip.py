@@ -36,16 +36,19 @@ class SetManagementIP(Job):
             role__name="network:management", status__name="Reserved"
         )
 
-        i = 0
         for myinterface in myinterfaces:
             if myinterface.device in devices:
-                myipaddress = myipaddresses[i]
+
+                myipaddresses = IPAddress.objects.filter(
+                    role__name="network:management", status__name="Reserved"
+                )
+                myipaddress = myipaddresses[0]
                 myipaddress.status = Status.objects.get(name="Active")
                 myipaddress.validated_save()
+
                 myinterface.ip_addresses.add(myipaddress)
-                myinterface.description = myipaddress.address
+                myinterface.description = "MGMT IP: " + myipaddress.address
                 myinterface.validated_save()
-                i += 1
 
 
 register_jobs(SetManagementIP)
