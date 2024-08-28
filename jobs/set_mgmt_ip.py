@@ -39,7 +39,7 @@ class SetManagementIP(Job):
         i = 0
         for myinterface in myinterfaces:
             if myinterface.device in devices:
-                print(interface.device, interface.name, myipaddresses[i].address)
+                print(myinterface.device, myinterface.name, myipaddresses[i].address)
                 i += 1
 
 
