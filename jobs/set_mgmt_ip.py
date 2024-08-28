@@ -39,8 +39,8 @@ class SetManagementIP(Job):
         i = 0
         for myinterface in myinterfaces:
             if myinterface.device in devices:
-                myinterface.ip_addresses.add(myipaddress[i])
-                myinterface.description = myipaddress[i].address
+                myinterface.ip_addresses.add(myipaddresses[i])
+                myinterface.description = myipaddresses[i].address
                 myinterface.validated_save()
                 i += 1
 
