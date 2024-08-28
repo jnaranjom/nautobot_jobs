@@ -43,4 +43,4 @@ class SetManagementIP(Job):
                 i += 1
 
 
-register_jobs(SetManagementIPs)
+register_jobs(SetManagementIP)
