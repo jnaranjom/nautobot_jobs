@@ -2,7 +2,7 @@
 
 from nautobot.apps.jobs import Job, ObjectVar, MultiObjectVar, register_jobs
 from nautobot.dcim.models.locations import Location, LocationType
-from nautobot.ipam.models import IPAddress
+from nautobot.ipam.models import IPAddress, Namespace
 from nautobot.dcim.models import Device, Interface
 from nautobot.extras.models import Status, Role
 
@@ -39,9 +39,15 @@ class SetManagementIP(Job):
         i = 0
         for myinterface in myinterfaces:
             if myinterface.device in devices:
-                myinterface.ip_addresses.add(myipaddresses[i])
+                myinterface.ip_addresses.add(
+                    address=myipaddresses[i].address,
+                    namespace=Namespace.objects.get(name="Global"),
+                    type="host",
+                    status=Status.objects.get(name="Active"),
+                )
                 myinterface.description = myipaddresses[i].address
                 myinterface.validated_save()
                 i += 1
+
 
 register_jobs(SetManagementIP)
