@@ -1,4 +1,4 @@
 """ INIT FILE FOR JOBS"""
 
 from .get_prefixes import PrefixDetails
-from .set_mgmt_ip.py import SetManagementIP
+from .set_mgmt_ip import SetManagementIP
