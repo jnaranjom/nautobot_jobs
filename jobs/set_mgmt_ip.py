@@ -39,13 +39,11 @@ class SetManagementIP(Job):
         i = 0
         for myinterface in myinterfaces:
             if myinterface.device in devices:
-                myinterface.ip_addresses.add(
-                    address=myipaddresses[i].address,
-                    namespace=Namespace.objects.get(name="Global"),
-                    type="host",
-                    status=Status.objects.get(name="Active"),
-                )
-                myinterface.description = myipaddresses[i].address
+                myipaddress = myipaddresses[i]
+                myipaddress.status = Status.objects.get(name="Active")
+                myipaddress.validated_save()
+                myinterface.ip_addresses.add(myipaddress)
+                myinterface.description = myipaddress.address
                 myinterface.validated_save()
                 i += 1
 
