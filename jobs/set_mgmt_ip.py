@@ -47,7 +47,7 @@ class SetManagementIP(Job):
                 myipaddress.validated_save()
 
                 myinterface.ip_addresses.add(myipaddress)
-                myinterface.description = "MGMT IP: " + myipaddress.address
+                myinterface.description = "MGMT"
                 myinterface.validated_save()
 
 
