@@ -42,9 +42,9 @@ class SetManagementIP(Job):
             device_mgmt_int = Interface.objects.get(mgmt_only=True, device=device.id)
             print(
                 "Device MGNT interface: "
-                + device_mgmt_int
+                + device_mgmt_int.name
                 + "MGMT interface: "
-                + mgmt_interfaces[i]
+                + mgmt_interfaces[i].name
             )
             print("Update status -> " + planned_status)
             i += 1
