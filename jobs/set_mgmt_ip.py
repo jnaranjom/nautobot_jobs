@@ -65,7 +65,7 @@ class SetManagementIP(Job):
 
                 device_mgmt_int.validated_save()
 
-                device.primary_ip4 = ipaddress
+                device.primary_ip4 = mgmt_ip
                 device.validated_save()
 
             if device_mgmt_int.connected_endpoint:
