@@ -34,7 +34,7 @@ class SetManagementIP(Job):
         myinterfaces = Interface.objects.filter(mgmt_only=True)
         planned_status = Status.objects.get(name="Planned")
         mgmt_interfaces = Interface.objects.filter(
-            device=mymgmtswitch[0], status=planned_status
+            device=mgmtswitch[0], status=planned_status
         )
 
         print(myinterfaces)
