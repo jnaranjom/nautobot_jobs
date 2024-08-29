@@ -28,15 +28,12 @@ class SetManagementIP(Job):
         """Main function"""
 
         planned_status = Status.objects.get(name="Planned")
-
-        mgmt_interfaces = mgmt_switch.interfaces.filter(status=planned_status)
-
-        mgmt_prefix = Prefix.objects.get(role__name="network:management")
-
+        active_status = Status.objects.get(name="Active")
         mgmt_ip_status = Status.objects.get(name="Reserved")
 
+        mgmt_interfaces = mgmt_switch.interfaces.filter(status=planned_status)
+        mgmt_prefix = Prefix.objects.get(role__name="network:management")
         mgmt_cable_status = Status.objects.get(name="Connected")
-
         termination_type = ContentType.objects.get(app_label="dcim", model="interface")
 
         # TODO: FAIL IN NUM OF DEVICES IS GREATER THAN AVAILABLE MGMT INT
@@ -80,6 +77,10 @@ class SetManagementIP(Job):
                 )
 
                 mgmt_cable.validated_save()
+
+                mgmt_interfaces[idx].status = active_status
+
+                mgmt_interfaces[idx].validated_save()
 
 
 register_jobs(SetManagementIP)
