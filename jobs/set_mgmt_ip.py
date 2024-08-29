@@ -46,7 +46,7 @@ class SetManagementIP(Job):
                 + "MGMT interface: "
                 + mgmt_interfaces[i].name
             )
-            print("Update status -> " + planned_status)
+            print("Update status -> " + planned_status.name)
             i += 1
 
         # print(mgmt_interfaces)
