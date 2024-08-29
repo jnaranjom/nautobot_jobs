@@ -1,4 +1,4 @@
-""" SET MANAGEMENT IP IN INTERFACE """
+""" SET MANAGEMENT ON DEVICES """
 
 from nautobot.apps.jobs import Job, ObjectVar, MultiObjectVar, register_jobs
 from nautobot.dcim.models.locations import Location, LocationType
@@ -9,11 +9,7 @@ from nautobot.extras.models import Status, Role
 
 
 class SetManagementIP(Job):
-    """Set Mgmt IP on device interface
-
-    Args:
-        Job (_type_): _description_
-    """
+    """Set Mgmt on Devices"""
 
     location = ObjectVar(model=Location)
 
@@ -25,15 +21,11 @@ class SetManagementIP(Job):
         """Jobs Metadata"""
 
     name = "Set MGMT IP"
-    description = "Job to set the IP address on the Management interface of the devices"
+    description = "Job to set the Management on the devices"
     dryrun_default = True
 
     def run(self, location, mgmt_switch, devices):
-        """_summary_
-
-        Args:
-            location (_type_): _description_
-        """
+        """Main function"""
 
         planned_status = Status.objects.get(name="Planned")
 
@@ -54,7 +46,7 @@ class SetManagementIP(Job):
 
             if device_mgmt_int.ip_addresses.first():
                 self.logger.info(
-                    f"Interface {device_mgmt_int.name} has an IP assigned already"
+                    f"Device: {device.name}, Interface {device_mgmt_int.name} has an IP assigned already"
                 )
             else:
                 ipaddress = mgmt_prefix.get_first_available_ip()
@@ -69,14 +61,14 @@ class SetManagementIP(Job):
 
                 device_mgmt_int.ip_addresses.add(mgmt_ip)
                 device_mgmt_int.description = (
-                    mgmt_switch.name + " " + mgmt_interfaces[idx].name
+                    f"{mgmt_switch.name}--{mgmt_interfaces[idx].name}"
                 )
 
                 device_mgmt_int.validated_save()
 
             if device_mgmt_int.connected_endpoint:
                 self.logger.info(
-                    f"Interface {device_mgmt_int.name} has an active connection"
+                    f"Device: {device.name}, Interface {device_mgmt_int.name} has an active connection"
                 )
             else:
                 mgmt_cable, _ = Cable.objects.get_or_create(
