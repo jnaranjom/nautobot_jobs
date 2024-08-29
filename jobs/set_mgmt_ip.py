@@ -45,6 +45,9 @@ class SetManagementIP(Job):
                 self.logger.info(
                     f"Device: {device.name}, Interface {device_mgmt_int.name} has an IP assigned already"
                 )
+                device.primary_ip4 = device_mgmt_int.ip_addresses[0].address
+                device.validated_save()
+
             else:
                 ipaddress = mgmt_prefix.get_first_available_ip()
                 mgmt_ip = IPAddress(
