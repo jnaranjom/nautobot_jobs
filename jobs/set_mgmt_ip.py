@@ -15,6 +15,7 @@ class SetManagementIP(Job):
     """
 
     location = ObjectVar(model=Location)
+    mgmt_switch = ObjectVar(model=Device, query_params={"role": "management:switch"})
     devices = MultiObjectVar(model=Device, query_params={"location": "$location"})
 
     class Meta:
@@ -24,31 +25,29 @@ class SetManagementIP(Job):
     description = "Job to set the IP address on the Management interface of the devices"
     dryrun_default = True
 
-    def run(self, location, devices):
+    def run(self, location, devices, mgmt_switch):
         """_summary_
 
         Args:
             location (_type_): _description_
         """
         myinterfaces = Interface.objects.filter(mgmt_only=True)
+        print(mgmt_switch)
 
-        myipaddresses = IPAddress.objects.filter(
-            role__name="network:management", status__name="Reserved"
-        )
+        # for myinterface in myinterfaces:
+        #     if myinterface.device in devices:
 
-        for myinterface in myinterfaces:
-            if myinterface.device in devices:
+        #         myipaddresses = IPAddress.objects.filter(
+        #             role__name="network:management", status__name="Reserved"
+        #         )
 
-                myipaddresses = IPAddress.objects.filter(
-                    role__name="network:management", status__name="Reserved"
-                )
-                myipaddress = myipaddresses[0]
-                myipaddress.status = Status.objects.get(name="Active")
-                myipaddress.validated_save()
+        #         myipaddress = myipaddresses[0]
+        #         myipaddress.status = Status.objects.get(name="Active")
+        #         myipaddress.validated_save()
 
-                myinterface.ip_addresses.add(myipaddress)
-                myinterface.description = "MGMT"
-                myinterface.validated_save()
+        #         myinterface.ip_addresses.add(myipaddress)
+        #         myinterface.description = "MGMT"
+        #         myinterface.validated_save()
 
 
 register_jobs(SetManagementIP)
