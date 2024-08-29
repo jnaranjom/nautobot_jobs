@@ -49,36 +49,45 @@ class SetManagementIP(Job):
 
         # TODO: FAIL IN NUM OF DEVICES IS GREATER THAN AVAILABLE MGMT INT
         for idx, device in enumerate(devices):
+
             device_mgmt_int = device.interfaces.get(mgmt_only=True)
 
-            mgmt_cable, _ = Cable.objects.get_or_create(
-                termination_a_type=termination_type,
-                termination_a_id=device_mgmt_int.id,
-                termination_b_type=termination_type,
-                termination_b_id=mgmt_interfaces[idx].id,
-                status=mgmt_cable_status,
-            )
+            if device_mgmt_int.ip_addresses.first():
+                self.logger.info(
+                    f"Interface {device_mgmt_int.name} has an IP assigned already"
+                )
+            else:
+                ipaddress = mgmt_prefix.get_first_available_ip()
+                mgmt_ip = IPAddress(
+                    address=ipaddress,
+                    namespace=mgmt_prefix.namespace,
+                    type="host",
+                    status=mgmt_ip_status,
+                )
 
-            mgmt_cable.validated_save()
+                mgmt_ip.validated_save()
 
-            ipaddress = mgmt_prefix.get_first_available_ip()
+                device_mgmt_int.ip_addresses.add(mgmt_ip)
+                device_mgmt_int.description = (
+                    mgmt_switch.name + " " + mgmt_interfaces[idx].name
+                )
 
-            mgmt_ip = IPAddress(
-                address=ipaddress,
-                namespace=mgmt_prefix.namespace,
-                type="host",
-                status=mgmt_ip_status,
-            )
+                device_mgmt_int.validated_save()
 
-            mgmt_ip.validated_save()
+            if device_mgmt_int.connected_endpoint:
+                self.logger.info(
+                    f"Interface {device_mgmt_int.name} has an active connection"
+                )
+            else:
+                mgmt_cable, _ = Cable.objects.get_or_create(
+                    termination_a_type=termination_type,
+                    termination_a_id=device_mgmt_int.id,
+                    termination_b_type=termination_type,
+                    termination_b_id=mgmt_interfaces[idx].id,
+                    status=mgmt_cable_status,
+                )
 
-            device_mgmt_int.ip_addresses.add(mgmt_ip)
-
-            device_mgmt_int.description = (
-                mgmt_switch.name + " " + mgmt_interfaces[idx].name
-            )
-
-            device_mgmt_int.validated_save()
+                mgmt_cable.validated_save()
 
 
 register_jobs(SetManagementIP)
