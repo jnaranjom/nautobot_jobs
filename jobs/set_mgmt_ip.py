@@ -38,8 +38,10 @@ class SetManagementIP(Job):
         # mgmt_interfaces = Interface.objects.filter(
         #     device=mgmt_switch, status=planned_status
         # )
+        for myinterface in myinterfaces:
+            print(myinterface)
 
-        print(myinterfaces)
+        print(mgmt_switch)
         print(planned_status)
         # print(mgmt_interfaces)
 
