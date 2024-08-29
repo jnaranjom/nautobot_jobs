@@ -27,7 +27,7 @@ class SetManagementIP(Job):
     description = "Job to set the IP address on the Management interface of the devices"
     dryrun_default = True
 
-    def run(self, location, role, mgmt_switch, devices):
+    def run(self, location, mgmt_switch, devices):
         """_summary_
 
         Args:
