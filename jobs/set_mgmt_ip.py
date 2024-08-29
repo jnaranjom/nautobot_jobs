@@ -15,8 +15,9 @@ class SetManagementIP(Job):
     """
 
     location = ObjectVar(model=Location)
-    role = ObjectVar(model=Role)
-    mgmt_switch = ObjectVar(model=Device, query_params={"role": "$role"})
+
+    mgmt_switch = ObjectVar(model=Device, query_params={"role": "management:switch"})
+
     devices = MultiObjectVar(model=Device, query_params={"location": "$location"})
 
     class Meta:
@@ -36,20 +37,18 @@ class SetManagementIP(Job):
         planned_status = Status.objects.get(name="Planned")
         mgmt_interfaces = Interface.objects.filter(
             device=mgmt_switch.id, status=planned_status
-        )
+        )[:]
         i = 0
         for device in devices:
             device_mgmt_int = Interface.objects.get(mgmt_only=True, device=device.id)
             print(
-                "Device MGNT interface: "
+                "Device MGMT interface: "
                 + device_mgmt_int.name
-                + "MGMT interface: "
+                + " MGMT Switch interface: "
                 + mgmt_interfaces[i].name
             )
             print("Update status -> " + planned_status.name)
             i += 1
-
-        # print(mgmt_interfaces)
 
         # for myinterface in myinterfaces:
         #     if myinterface.device in devices:
