@@ -49,9 +49,6 @@ class SetManagementIP(Job):
             else:
                 ipaddress = mgmt_prefix.get_first_available_ip()
 
-                device.primary_ip4 = ipaddress
-                device.validated_save()
-
                 mgmt_ip = IPAddress(
                     address=ipaddress,
                     namespace=mgmt_prefix.namespace,
@@ -67,6 +64,9 @@ class SetManagementIP(Job):
                 )
 
                 device_mgmt_int.validated_save()
+
+                device.primary_ip4 = ipaddress
+                device.validated_save()
 
             if device_mgmt_int.connected_endpoint:
                 self.logger.info(
