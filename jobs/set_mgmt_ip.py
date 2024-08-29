@@ -40,8 +40,9 @@ class SetManagementIP(Job):
         )
         for myinterface in myinterfaces:
             print(myinterface)
+        for mgmt_interface in mgmt_interfaces:
+            print(mgmt_interface)
 
-        print(mgmt_interfaces)
         print(planned_status)
         # print(mgmt_interfaces)
 
