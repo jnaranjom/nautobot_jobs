@@ -47,6 +47,7 @@ class SetManagementIP(Job):
                 )
                 primary_ipv4 = device_mgmt_int.ip_addresses.first()
                 device.primary_ip4 = primary_ipv4
+                device.validated_save()
 
             else:
                 ipaddress = mgmt_prefix.get_first_available_ip()
