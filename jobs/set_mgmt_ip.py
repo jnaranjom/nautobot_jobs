@@ -51,7 +51,7 @@ class SetManagementIP(Job):
         for idx, device in enumerate(devices):
             device_mgmt_int = device.interfaces.get(mgmt_only=True)
 
-            mgmt_cable = Cable.objects.get_or_create(
+            mgmt_cable, _ = Cable.objects.get_or_create(
                 termination_a_type=termination_type,
                 termination_a_id=device_mgmt_int.id,
                 termination_b_type=termination_type,
