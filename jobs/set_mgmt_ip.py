@@ -35,20 +35,14 @@ class SetManagementIP(Job):
         """
 
         planned_status = Status.objects.get(name="Planned")
-        mgmt_interfaces = Interface.objects.filter(
-            device=mgmt_switch.id, status=planned_status
-        )[:]
-        i = 0
-        for device in devices:
-            device_mgmt_int = Interface.objects.get(mgmt_only=True, device=device.id)
-            print(
-                "Device MGMT interface: "
-                + device_mgmt_int.name
-                + " MGMT Switch interface: "
-                + mgmt_interfaces[i].name
-            )
-            print("Update status -> " + planned_status.name)
-            i += 1
+
+        mgmt_interfaces = mgmt_switch.interfaces.filter(status=planned_status)
+
+        #TODO: FAIL IN NUM OF DEVICES IS GREATER THAN AVAILABLE MGMT INT
+        for idx, device in enumerate(devices):
+            device_mgmt_int = device.interfaces.get(mgmt_only=True)
+            print(device.name, device_mgmt_int, mgmt_switch.name, mgmt_interfaces[idx].name)
+
 
         # for myinterface in myinterfaces:
         #     if myinterface.device in devices:
