@@ -33,17 +33,22 @@ class SetManagementIP(Job):
             location (_type_): _description_
         """
 
-        myinterfaces = Interface.objects.filter(mgmt_only=True)
         planned_status = Status.objects.get(name="Planned")
         mgmt_interfaces = Interface.objects.filter(
             device=mgmt_switch.id, status=planned_status
         )
-        for myinterface in myinterfaces:
-            print(myinterface)
-        for mgmt_interface in mgmt_interfaces:
-            print(mgmt_interface)
+        i = 0
+        for device in devices:
+            device_mgmt_int = Interface.objects.get(mgmt_only=True, device=device.id)
+            print(
+                "Device MGNT interface: "
+                + device_mgmt_int
+                + "MGMT interface: "
+                + mgmt_interfaces[i]
+            )
+            print("Update status -> " + planned_status)
+            i += 1
 
-        print(planned_status)
         # print(mgmt_interfaces)
 
         # for myinterface in myinterfaces:
