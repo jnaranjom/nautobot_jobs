@@ -38,10 +38,28 @@ class SetManagementIP(Job):
 
         mgmt_interfaces = mgmt_switch.interfaces.filter(status=planned_status)
 
+        mgmt_prefix = Prefix.objects.get(role__name="network:management")
+
+        mgmt_ip_status = Status.objects.get(name="Reserved")
+
+
         #TODO: FAIL IN NUM OF DEVICES IS GREATER THAN AVAILABLE MGMT INT
         for idx, device in enumerate(devices):
             device_mgmt_int = device.interfaces.get(mgmt_only=True)
-            print(device.name, device_mgmt_int, mgmt_switch.name, mgmt_interfaces[idx].name)
+
+            print(device.name, device_mgmt_int.name, mgmt_switch.name, mgmt_interfaces[idx].name)
+
+            ipaddress = mgmt_prefix.get_first_available_ip()
+
+            mgmt_ip = IPAddress(address=ipaddress,namespace=mgmt_prefix.namespace,type="host",status=mgmt_ip_status)
+
+            mgmt_ip.validated_save()
+
+            device_mgmt_int.ip_addresses.add(mgmt_ip)
+
+            device_mgmt_int.description = mgmt_switch.name + mgmt_interfaces[idx].name
+
+            device_mgmt_int.validated_save()
 
 
         # for myinterface in myinterfaces:
