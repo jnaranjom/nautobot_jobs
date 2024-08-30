@@ -4,10 +4,9 @@ from nautobot.apps.jobs import Job, ObjectVar, MultiObjectVar, register_jobs
 from nautobot.dcim.models.locations import Location
 from nautobot.dcim.models import Device, Cable
 from nautobot.ipam.models import IPAddress, Prefix
-
-# from django.contrib.contenttypes.models import ContentType
 from nautobot.extras.models import Status
 from .cable_helper import connect_cable_endpoints
+from .status_helper import find_status_uuid
 
 
 class SetManagementIP(Job):
@@ -29,14 +28,9 @@ class SetManagementIP(Job):
     def run(self, location, mgmt_switch, devices):
         """Main function"""
 
-        planned_status = Status.objects.get(name="Planned")
-        active_status = Status.objects.get(name="Active")
-        ipaddr_status = Status.objects.get(name="Reserved")
-        # cable_status = Status.objects.get(name="Connected")
-
+        planned_status = find_status_uuid("Planned")
         mgmt_interfaces = mgmt_switch.interfaces.filter(status=planned_status)
         mgmt_prefix = Prefix.objects.get(role__name="network:management")
-        # termination_type = ContentType.objects.get(app_label="dcim", model="interface")
 
         if len(mgmt_interfaces) >= len(devices):
             for idx, device in enumerate(devices):
@@ -49,13 +43,14 @@ class SetManagementIP(Job):
                     )
 
                 else:
+                    reserved_status = find_status_uuid("Reserved")
                     ipaddress = mgmt_prefix.get_first_available_ip()
 
                     mgmt_ip = IPAddress(
                         address=ipaddress,
                         namespace=mgmt_prefix.namespace,
                         type="host",
-                        status=ipaddr_status,
+                        status=reserved_status,
                     )
 
                     mgmt_ip.validated_save()
@@ -75,16 +70,9 @@ class SetManagementIP(Job):
                         f"Device: {device.name}, Interface: {device_mgmt_int.name} has an active connection"
                     )
                 else:
-                    connect_cable_endpoints(device_mgmt_int.id, mgmt_interfaces[idx].id)
-                    # mgmt_cable, _ = Cable.objects.get_or_create(
-                    #     termination_a_type=termination_type,
-                    #     termination_a_id=device_mgmt_int.id,
-                    #     termination_b_type=termination_type,
-                    #     termination_b_id=mgmt_interfaces[idx].id,
-                    #     status=cable_status,
-                    # )
+                    actice_status = find_status_uuid("Active")
 
-                    # mgmt_cable.validated_save()
+                    connect_cable_endpoints(device_mgmt_int.id, mgmt_interfaces[idx].id)
 
                     mgmt_interfaces[idx].status = active_status
                     mgmt_interfaces[idx].description = (
@@ -94,7 +82,8 @@ class SetManagementIP(Job):
 
         else:
             self.logger.info(
-                f"Not enough interfaces available in {mgmt_switch}. Only {len(mgmt_interfaces)} available. {len(devices)} devices need MGMT configuration."
+                f"""Not enough interfaces available in {mgmt_switch}. Only {len(mgmt_interfaces)} available.
+                    {len(devices)} devices need MGMT configuration."""
             )
 
 
