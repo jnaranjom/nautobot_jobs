@@ -29,8 +29,8 @@ class SetManagementIP(Job):
 
         planned_status = Status.objects.get(name="Planned")
         active_status = Status.objects.get(name="Active")
-        mgmt_ip_status = Status.objects.get(name="Reserved")
-        mgmt_cable_status = Status.objects.get(name="Connected")
+        ipaddr_status = Status.objects.get(name="Reserved")
+        cable_status = Status.objects.get(name="Connected")
 
         mgmt_interfaces = mgmt_switch.interfaces.filter(status=planned_status)
         mgmt_prefix = Prefix.objects.get(role__name="network:management")
@@ -52,7 +52,7 @@ class SetManagementIP(Job):
                     address=ipaddress,
                     namespace=mgmt_prefix.namespace,
                     type="host",
-                    status=mgmt_ip_status,
+                    status=ipaddr_status,
                 )
 
                 mgmt_ip.validated_save()
@@ -77,7 +77,7 @@ class SetManagementIP(Job):
                     termination_a_id=device_mgmt_int.id,
                     termination_b_type=termination_type,
                     termination_b_id=mgmt_interfaces[idx].id,
-                    status=mgmt_cable_status,
+                    status=cable_status,
                 )
 
                 mgmt_cable.validated_save()
