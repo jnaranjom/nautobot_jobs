@@ -11,7 +11,7 @@ def create_ipaddr(prefix):
         prefix (): _description_
 
     Returns:
-       ipaddress())
+       ipaddress()
     """
     try:
         reserved_status = find_status_uuid("Reserved")
@@ -26,7 +26,7 @@ def create_ipaddr(prefix):
 
         ip_address.validated_save()
 
-        returns(ip_address)
+        return ip_address
 
     except ValidationError as err:
         raise AbortTransacion(f"Failed to create IP")

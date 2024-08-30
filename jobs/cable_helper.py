@@ -28,5 +28,7 @@ def connect_cable_endpoints(side_a, side_b):
 
         connect_cable.validated_save()
 
+        return connect_cable
+
     except ValidationError as err:
         raise AbortTransacion(f"Failed to create cable")
