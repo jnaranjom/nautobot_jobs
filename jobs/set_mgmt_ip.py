@@ -70,7 +70,7 @@ class SetManagementIP(Job):
                         f"Device: {device.name}, Interface: {device_mgmt_int.name} has an active connection"
                     )
                 else:
-                    actice_status = find_status_uuid("Active")
+                    active_status = find_status_uuid("Active")
 
                     connect_cable_endpoints(device_mgmt_int.id, mgmt_interfaces[idx].id)
 
