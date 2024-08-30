@@ -88,7 +88,7 @@ class SetManagementIP(Job):
                     mgmt_interfaces[idx].validated_save()
         else:
             self.logger.info(
-                f"Not enough interfaces available in the management switch {mgmt_switch} selected. Only {len(mgmt_interfaces)} available. But {len(devices)} need MGMT configuration."
+                f"Not enough interfaces available in {mgmt_switch}. Only {len(mgmt_interfaces)} available. But {len(devices)} devices need MGMT configuration."
             )
 
 
