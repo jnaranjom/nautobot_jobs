@@ -3,6 +3,7 @@
 from nautobot.dcim.models import Cable
 from nautobot.extras.models import Status
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ValidationError
 
 
 def connect_cable_endpoints(side_a, side_b):
