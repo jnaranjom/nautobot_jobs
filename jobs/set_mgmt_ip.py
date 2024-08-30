@@ -24,7 +24,7 @@ class SetManagementIP(Job):
     description = "Job to set the Management on the devices"
     dryrun_default = True
 
-    def run(self, mgmt_switch, devices):
+    def run(self, location, mgmt_switch, devices):
         """Main function"""
 
         planned_status = Status.objects.get(name="Planned")
