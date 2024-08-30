@@ -60,7 +60,7 @@ class SetManagementIP(Job):
 
                     device_mgmt_int.ip_addresses.add(mgmt_ip)
                     device_mgmt_int.description = (
-                        f"{mgmt_switch.name}--{mgmt_interfaces[idx].name}"
+                        f"{mgmt_switch.name}::{mgmt_interfaces[idx].name}"
                     )
 
                     device_mgmt_int.validated_save()
@@ -84,11 +84,14 @@ class SetManagementIP(Job):
                     mgmt_cable.validated_save()
 
                     mgmt_interfaces[idx].status = active_status
-
+                    mgmt_interfaces[idx].description = (
+                        f"{device.name}::{device_mgmt_int.name}"
+                    )
                     mgmt_interfaces[idx].validated_save()
+
         else:
             self.logger.info(
-                f"Not enough interfaces available in {mgmt_switch}. Only {len(mgmt_interfaces)} available. But {len(devices)} devices need MGMT configuration."
+                f"Not enough interfaces available in {mgmt_switch}. Only {len(mgmt_interfaces)} available. {len(devices)} devices need MGMT configuration."
             )
 
 
