@@ -11,9 +11,9 @@ def connect_cable_endpoints(side_a, side_b):
 
     connect_cable, _ = Cable.objects.get_or_create(
         termination_a_type=termination_type,
-        termination_a_id=side_a.id,
+        termination_a_id=side_a,
         termination_b_type=termination_type,
-        termination_b_id=side_b.id,
+        termination_b_id=side_b,
         status=cable_status,
     )
 
