@@ -37,7 +37,7 @@ class DeployBranchSmall(Job):
 
         for device in branch_devices:
             self.logger.info(
-                f"Finding device {device.name} type and available interface"
+                f"Finding device {device.name} type and available interfaces"
             )
             if device.role == router_role:
                 edge_router = device
@@ -65,12 +65,10 @@ class DeployBranchSmall(Job):
                     raise
 
             else:
-                self.logger.info(
-                    f"Unable to find device type for {device.name}. Update the device type before running this job again"
-                )
+                self.logger.info(f"Unable to find device type for {device.name}.")
 
         self.logger.info(
-            f"Connect {edge_router.name} interface {router_interface} with {access_switch.name} interface {switch_interface}"
+            f"Connect: {edge_router.name} interface: {router_interface} <---> {access_switch.name} interface: {switch_interface}"
         )
 
         connect_cable_endpoints(router_interface.id, switch_interface.id)
