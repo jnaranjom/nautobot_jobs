@@ -28,7 +28,16 @@ class DeployBranchSmall(Job):
         branch_devices = Device.objects.filter(location=branch_location)
 
         for device in branch_devices:
-            print(device.name, device.role)
+            if device.role == "branch:edge:router":
+                edge_router = device
+                print(device.name, device.role)
+            elif device.role == "branch:access:switch":
+                access_switch = device
+                print(device.name, device.role)
+            else:
+                self.logger.info(
+                    f"Unable to find device type for {device.name}. Update the device type before running this job again"
+                )
 
 
 register_jobs(DeployBranchSmall)
