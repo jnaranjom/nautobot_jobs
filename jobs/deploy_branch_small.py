@@ -2,6 +2,7 @@
 
 from nautobot.apps.jobs import Job, ObjectVar, MultiObjectVar, register_jobs
 from nautobot.dcim.models.locations import Location
+from nautobot.extras.models.roles import Role
 from nautobot.dcim.models import Device, Cable
 from nautobot.ipam.models import IPAddress, Prefix
 from nautobot.extras.models import Status
