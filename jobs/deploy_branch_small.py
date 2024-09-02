@@ -27,11 +27,14 @@ class DeployBranchSmall(Job):
 
         branch_devices = Device.objects.filter(location=branch_location)
 
+        router_role = Role.objects.get(name="branch:edge:router")
+        switch_role = Role.objects.get(name="branch:access:switch")
+
         for device in branch_devices:
-            if "branch:edge:router" in device.role:
+            if device.role == router_role:
                 edge_router = device
                 print(device.name, device.role)
-            elif "branch:access:switch" in device.role:
+            elif device.role == switch_role:
                 access_switch = device
                 print(device.name, device.role)
             else:
