@@ -37,7 +37,7 @@ class DeployBranchSmall(Job):
 
         for device in branch_devices:
             self.logger.info(
-                f"Finding device {device.name} type and available interfaces"
+                f"Finding device type and available interfaces for: {device.name}."
             )
             if device.role == router_role:
                 edge_router = device
