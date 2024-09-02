@@ -33,6 +33,7 @@ class DeployBranchSmall(Job):
         switch_role = Role.objects.get(name="branch:access:switch")
 
         planned_status = find_status_uuid("Planned")
+        active_status = find_status_uuid("Active")
 
         for device in branch_devices:
             if device.role == router_role:
@@ -48,17 +49,14 @@ class DeployBranchSmall(Job):
                     f"Unable to find device type for {device.name}. Update the device type before running this job again"
                 )
 
-        active_status = find_status_uuid("Active")
-
         connect_cable_endpoints(router_interface.id, switch_interface.id)
 
-        router_interface.status = active_status
-        router_interface.description = f"{edge_router.name}::{router_interface.name}"
-        router_interface.validated_save()
-
-        switch_interface.status = active_status
-        switch_interface.description = f"{access_switch.name}::{switch_interface.name}"
-        switch_interface.validated_save()
+        for update_interface in [router_interface, switch_interface]:
+            update_interface.status = active_status
+            update_interface.description = (
+                f"{router_interface.device}::{update_interface.name}"
+            )
+            update_interface.validated_save()
 
 
 register_jobs(DeployBranchSmall)
