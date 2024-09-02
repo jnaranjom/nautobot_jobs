@@ -42,7 +42,7 @@ class DeployBranchSmall(Job):
             if device.role == router_role:
 
                 edge_router = device
-                if len(router_interface) > 0:
+                if len(device.interfaces.filter(status=planned_status)[0]) > 0:
                     router_interface = device.interfaces.filter(status=planned_status)[
                         0
                     ]
@@ -54,7 +54,7 @@ class DeployBranchSmall(Job):
 
             elif device.role == switch_role:
                 access_switch = device
-                if not len(router_interface):
+                if len(device.interfaces.filter(status=planned_status)[0]) > 0:
                     switch_interface = device.interfaces.filter(status=planned_status)[
                         0
                     ]
