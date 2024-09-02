@@ -15,6 +15,7 @@ class DeployBranchSmall(Job):
     """Job to deploy new small branch"""
 
     branch_location = ObjectVar(model=Location, query_params={"tenant": "Branch"})
+    isp_router = ObjectVar(model=Device, query_params={"tenant": "ISP"})
 
     class Meta:
         """Jobs Metadata"""
@@ -71,6 +72,7 @@ class DeployBranchSmall(Job):
             f"Connect: {edge_router.name} interface: {router_interface} <---> {access_switch.name} interface: {switch_interface}"
         )
 
+        # Connect branch devices
         connect_cable_endpoints(router_interface.id, switch_interface.id)
 
         for update_interface in [router_interface, switch_interface]:
@@ -79,6 +81,11 @@ class DeployBranchSmall(Job):
                 f"{update_interface.device}::{update_interface.name}"
             )
             update_interface.validated_save()
+
+        # Connect branch to ISP
+        self.logger.info(
+            f"Will connect the Edge Router with this ISP router: {ips_router.name}."
+        )
 
 
 register_jobs(DeployBranchSmall)
