@@ -54,7 +54,7 @@ class DeployBranchSmall(Job):
         for update_interface in [router_interface, switch_interface]:
             update_interface.status = active_status
             update_interface.description = (
-                f"{router_interface.device}::{update_interface.name}"
+                f"{update_interface.device}::{update_interface.name}"
             )
             update_interface.validated_save()
 
