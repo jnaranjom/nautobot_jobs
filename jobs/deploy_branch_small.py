@@ -34,9 +34,11 @@ class DeployBranchSmall(Job):
             if device.role == router_role:
                 edge_router = device
                 print(device.name, device.role)
+
             elif device.role == switch_role:
                 access_switch = device
                 print(device.name, device.role)
+
             else:
                 self.logger.info(
                     f"Unable to find device type for {device.name}. Update the device type before running this job again"
