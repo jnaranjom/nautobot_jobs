@@ -9,6 +9,7 @@ from .cable_helper import connect_cable_endpoints
 from .status_helper import find_status_uuid
 from .ipaddress_helper import create_ipaddr
 
+
 class DeployBranchSmall(Job):
     """Job to deploy new small branch"""
 
@@ -28,5 +29,6 @@ class DeployBranchSmall(Job):
 
         for device in devices:
             print(device.name, device.role)
+
 
 register_jobs(DeployBranchSmall)
