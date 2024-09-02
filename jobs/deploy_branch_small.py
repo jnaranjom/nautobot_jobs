@@ -48,21 +48,17 @@ class DeployBranchSmall(Job):
                     f"Unable to find device type for {device.name}. Update the device type before running this job again"
                 )
 
-            active_status = find_status_uuid("Active")
+        active_status = find_status_uuid("Active")
 
-            connect_cable_endpoints(router_interface.id, switch_interface.id)
+        connect_cable_endpoints(router_interface.id, switch_interface.id)
 
-            router_interface.status = active_status
-            router_interface.description = (
-                f"{edge_router.name}::{router_interface.name}"
-            )
-            router_interface.validated_save()
+        router_interface.status = active_status
+        router_interface.description = f"{edge_router.name}::{router_interface.name}"
+        router_interface.validated_save()
 
-            switch_interface.status = active_status
-            switch_interface.description = (
-                f"{access_switchr.name}::{switch_interface.name}"
-            )
-            switch_interface.validated_save()
+        switch_interface.status = active_status
+        switch_interface.description = f"{access_switchr.name}::{switch_interface.name}"
+        switch_interface.validated_save()
 
 
 register_jobs(DeployBranchSmall)
