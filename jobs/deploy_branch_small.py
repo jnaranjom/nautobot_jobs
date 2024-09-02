@@ -46,10 +46,11 @@ class DeployBranchSmall(Job):
                     router_interface = device.interfaces.filter(status=planned_status)[
                         0
                     ]
-                except:
+                except Exception as err:
                     self.logger.info(
                         f"Unable to find available interfaces (Planned Status) in {device.name}."
                     )
+                    raise
 
             elif device.role == switch_role:
                 access_switch = device
@@ -57,10 +58,11 @@ class DeployBranchSmall(Job):
                     switch_interface = device.interfaces.filter(status=planned_status)[
                         0
                     ]
-                except:
+                except Exception as err:
                     self.logger.info(
                         f"Unable to find available interfaces (Planned Status) in {device.name}."
                     )
+                    raise
 
             else:
                 self.logger.info(
@@ -70,6 +72,7 @@ class DeployBranchSmall(Job):
         self.logger.info(
             f"Connect {edge_router.name} interface {router_interface} with {access_switch.name} interface {switch_interface}"
         )
+
         connect_cable_endpoints(router_interface.id, switch_interface.id)
 
         for update_interface in [router_interface, switch_interface]:
