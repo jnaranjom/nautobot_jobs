@@ -45,17 +45,6 @@ class SetManagementIP(Job):
 
                 else:
                     mgmt_ip = create_ipaddr(mgmt_prefix)
-                    # reserved_status = find_status_uuid("Reserved")
-                    # ipaddress = mgmt_prefix.get_first_available_ip()
-
-                    # mgmt_ip = IPAddress(
-                    #     address=ipaddress,
-                    #     namespace=mgmt_prefix.namespace,
-                    #     type="host",
-                    #     status=reserved_status,
-                    # )
-
-                    # mgmt_ip.validated_save()
 
                     device_mgmt_int.ip_addresses.add(mgmt_ip)
                     device_mgmt_int.description = (
