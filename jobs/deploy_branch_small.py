@@ -57,7 +57,7 @@ class DeployBranchSmall(Job):
         router_interface.validated_save()
 
         switch_interface.status = active_status
-        switch_interface.description = f"{access_switchr.name}::{switch_interface.name}"
+        switch_interface.description = f"{access_switch.name}::{switch_interface.name}"
         switch_interface.validated_save()
 
 
