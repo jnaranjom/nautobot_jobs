@@ -42,11 +42,27 @@ class DeployBranchSmall(Job):
             if device.role == router_role:
 
                 edge_router = device
-                router_interface = device.interfaces.filter(status=planned_status)[0]
+                if len(router_interface) > 0:
+                    router_interface = device.interfaces.filter(status=planned_status)[
+                        0
+                    ]
+                else:
+                    self.logger.info(
+                        f"Unable to find available interfaces (Planned Status) in {device.name}."
+                    )
+                    break
 
             elif device.role == switch_role:
                 access_switch = device
-                switch_interface = device.interfaces.filter(status=planned_status)[0]
+                if not len(router_interface):
+                    switch_interface = device.interfaces.filter(status=planned_status)[
+                        0
+                    ]
+                else:
+                    self.logger.info(
+                        f"Unable to find available interfaces (Planned Status) in {device.name}."
+                    )
+                    break
 
             else:
                 self.logger.info(
