@@ -27,7 +27,7 @@ class DeployBranchSmall(Job):
 
         branch_devices = Device.objects.filter(location=branch_location)
 
-        for device in devices:
+        for device in branch_devices:
             print(device.name, device.role)
 
 
