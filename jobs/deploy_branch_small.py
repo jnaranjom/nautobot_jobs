@@ -139,8 +139,8 @@ class DeployBranchSmall(Job):
                 description=str(prefix.vlan.vid),
                 status=planned_status,
                 parent_interface=router_interface,
-                ip_addresses=interface_ip_address,
             )
+            new_int.ip_addresses.add(interface_ip_address)
             new_int.validated_save()
 
         self.logger.info("Site ASN: %s", edge_router.location.asn)
