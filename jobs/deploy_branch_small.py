@@ -127,6 +127,20 @@ class DeployBranchSmall(Job):
             self.logger.info(f"Gateway: {site_prefix.get_first_available_ip()}")
             self.logger.info(f"VLAN: {site_prefix.vlan}, VID: {site_prefix.vlan.vid}")
 
+        for prefix in site_prefixes:
+            int_id = f"{router_interface.name}.{str(prefix.vlan.vid)}"
+            interface_ip_address = create_ipaddr(prefix)
+            new_int = Interface(
+                device=edge_router,
+                name=int_id,
+                type="virtual",
+                description=str(prefix.vlan.vid),
+                status=planned_status,
+                parent_interface=router_interface,
+            )
+            new_int.ip_addresses.add(interface_ip_address)
+            new_int.validated_save()
+
         self.logger.info("Site ASN: %s", edge_router.location.asn)
 
         self.logger.info("Switch Access Interfaces: %s", edge_router.location.asn)
