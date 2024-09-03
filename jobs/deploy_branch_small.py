@@ -124,7 +124,7 @@ class DeployBranchSmall(Job):
         site_prefixes = edge_router.location.prefixes.all()
         for site_prefix in site_prefixes:
             self.logger.info(
-                "Prefix: %s", site_prefix, site_prefix.vlan, site_prefix.vlan_id
+                "Prefix: %s", site_prefix.prefix, site_prefix.vlan, site_prefix.vlan.vid
             )
             self.logger.info("Gateway: %s", site_prefix.get_first_available_ip())
 
