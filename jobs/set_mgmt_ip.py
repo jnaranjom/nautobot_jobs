@@ -63,13 +63,13 @@ class SetManagementIP(Job):
                 else:
                     active_status = find_status_uuid("Active")
 
-                    connect_cable_endpoints(device_mgmt_int.id, mgmt_interfaces[idx].id)
-
                     mgmt_interfaces[idx].status = active_status
                     mgmt_interfaces[idx].description = (
                         f"{device.name}::{device_mgmt_int.name}"
                     )
                     mgmt_interfaces[idx].validated_save()
+
+                    connect_cable_endpoints(device_mgmt_int.id, mgmt_interfaces[idx].id)
 
         else:
             self.logger.info(
