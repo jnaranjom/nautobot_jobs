@@ -126,7 +126,7 @@ class DeployBranchSmall(Job):
             self.logger.info(
                 "Prefix: %s", site_prefix.prefix, site_prefix.vlan, site_prefix.vlan_id
             )
-            self.logger.info("Gateway: %s", prefix.get_first_available_ip())
+            self.logger.info("Gateway: %s", site_prefix.get_first_available_ip())
 
         self.logger.info("Site ASN: %s", edge_router.location.asn)
 
