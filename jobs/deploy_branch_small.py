@@ -91,7 +91,7 @@ class DeployBranchSmall(Job):
         switch_interface.validated_save()
 
         # Connect branch devices
-        connect_cable_endpoints(router_interface.id, switch_interface.id)
+        # connect_cable_endpoints(router_interface.id, switch_interface.id)
 
         # Update interfaces between router and ISP router
         try:
@@ -117,7 +117,18 @@ class DeployBranchSmall(Job):
         isp_router_interface.validated_save()
 
         # Connect interfaces between router and ISP router
-        connect_cable_endpoints(router_isp_interface.id, isp_router_interface.id)
+        # connect_cable_endpoints(router_isp_interface.id, isp_router_interface.id)
+
+        self.logger.info(f"Display additional configuration settings")
+
+        site_prefixes = edge_router.location.prefixes.all()
+        for site_prefix in site_prefixes:
+            self.logger.info(
+                "Prefix: %s", site_prefix.prefix, site_prefix.vlan, site_prefix.vlan_id
+            )
+            self.logger.info("Gateway: %s", prefix.get_first_available_ip())
+
+        self.logger.info("Site ASN: %s", edge_router.location.asn)
 
 
 register_jobs(DeployBranchSmall)
