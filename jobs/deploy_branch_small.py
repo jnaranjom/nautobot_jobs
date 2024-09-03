@@ -76,16 +76,21 @@ class DeployBranchSmall(Job):
         # Connect branch devices
         connect_cable_endpoints(router_interface.id, switch_interface.id)
 
-        for update_interface in [router_interface, switch_interface]:
-            update_interface.status = active_status
-            update_interface.description = (
-                f"{update_interface.device}::{update_interface.name}"
-            )
-            update_interface.validated_save()
+        router_interface.status = active_status
+        router_interface.description = (
+            f"{switch_interface.device}::{switch_interface.name}"
+        )
+        router_interface.validated_save()
+
+        switch_interface.status = active_status
+        switch_interface.description = (
+            f"{router_interface.device}::{router_interface.name}"
+        )
+        switch_interface.validated_save()
 
         # Connect branch to ISP
         self.logger.info(
-            f"Will connect the Edge Router with this ISP router: {ips_router.name}."
+            f"Will connect the Edge Router with this ISP router: {isp_router.name}."
         )
 
 
