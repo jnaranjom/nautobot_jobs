@@ -145,8 +145,6 @@ class DeployBranchSmall(Job):
             new_int.ip_addresses.add(interface_ip_address)
             new_int.validated_save()
 
-        self.logger.info(f"Site ASN: {edge_router.location.asn}")
-
         self.logger.info("Setup Switch Access Interfaces:")
 
         for idx, switch_access_interface in enum(switch_access_interfaces):
