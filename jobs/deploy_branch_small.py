@@ -64,7 +64,7 @@ class DeployBranchSmall(Job):
                     switch_interface = device.interfaces.filter(
                         status=planned_status
                     ).first()
-                    switch_temp_interfaces = device.interfaces.filter(
+                    switch_access_interfaces = device.interfaces.filter(
                         status=planned_status
                     ).reverse()[:3]
 
@@ -128,6 +128,10 @@ class DeployBranchSmall(Job):
             self.logger.info(f"VLAN: {site_prefix.vlan}, VID: {site_prefix.vlan.vid}")
 
         self.logger.info("Site ASN: %s", edge_router.location.asn)
+
+        self.logger.info("Switch Access Interfaces: %s", edge_router.location.asn)
+        for switch_access_interface in switch_access_interfaces.reverse():
+            self.logger.info(f"Interface: {switch_access_interface.name}")
 
 
 register_jobs(DeployBranchSmall)
