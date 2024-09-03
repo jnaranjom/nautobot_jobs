@@ -82,13 +82,13 @@ class DeployBranchSmall(Job):
         )
 
         # Update interfaces between router and switch
-        router_interface.status = active_status
+        # router_interface.status = active_status
 
-        router_interface.validated_save()
+        # router_interface.validated_save()
 
-        switch_interface.status = active_status
+        # switch_interface.status = active_status
 
-        switch_interface.validated_save()
+        # switch_interface.validated_save()
 
         # Connect branch devices
         # connect_cable_endpoints(router_interface.id, switch_interface.id)
@@ -108,13 +108,13 @@ class DeployBranchSmall(Job):
         self.logger.info(
             f"Connect: {edge_router.name} interface: {router_isp_interface} <---> {isp_router.name} interface: {isp_router_interface.name}"
         )
-        router_isp_interface.status = active_status
+        # router_isp_interface.status = active_status
 
-        router_isp_interface.validated_save()
+        # router_isp_interface.validated_save()
 
-        isp_router_interface.status = active_status
+        # isp_router_interface.status = active_status
 
-        isp_router_interface.validated_save()
+        # isp_router_interface.validated_save()
 
         # Connect interfaces between router and ISP router
         # connect_cable_endpoints(router_isp_interface.id, isp_router_interface.id)
@@ -123,9 +123,7 @@ class DeployBranchSmall(Job):
 
         site_prefixes = edge_router.location.prefixes.all()
         for site_prefix in site_prefixes:
-            self.logger.info(
-                "Prefix: %s", site_prefix.prefix, site_prefix.vlan, site_prefix.vlan.vid
-            )
+            self.logger.info("Prefix: %s", site_prefix.prefix)
             self.logger.info("Gateway: %s", site_prefix.get_first_available_ip())
 
         self.logger.info("Site ASN: %s", edge_router.location.asn)
