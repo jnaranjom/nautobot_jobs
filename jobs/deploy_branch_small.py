@@ -78,6 +78,7 @@ class DeployBranchSmall(Job):
         # connect_cable_endpoints(router_interface.id, switch_interface.id)
 
         termination_type = ContentType.objects.get(app_label="dcim", model="interface")
+
         cable_status = Status.objects.get(name="Connected")
 
         connect_cable, _ = Cable.objects.get_or_create(
@@ -90,17 +91,17 @@ class DeployBranchSmall(Job):
 
         connect_cable.validated_save()
 
-        router_interface.status = active_status
-        router_interface.description = (
-            f"{switch_interface.device}::{switch_interface.name}"
-        )
-        router_interface.validated_save()
+        # router_interface.status = active_status
+        # router_interface.description = (
+        #     f"{switch_interface.device}::{switch_interface.name}"
+        # )
+        # router_interface.validated_save()
 
-        switch_interface.status = active_status
-        switch_interface.description = (
-            f"{router_interface.device}::{router_interface.name}"
-        )
-        switch_interface.validated_save()
+        # switch_interface.status = active_status
+        # switch_interface.description = (
+        #     f"{router_interface.device}::{router_interface.name}"
+        # )
+        # switch_interface.validated_save()
 
         # Connect branch to ISP
         self.logger.info(
