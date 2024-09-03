@@ -88,6 +88,7 @@ class DeployBranchSmall(Job):
         router_interface.validated_save()
 
         switch_interface.status = active_status
+        switch_interface.mode = "tagged"
 
         switch_interface.validated_save()
 
@@ -120,16 +121,16 @@ class DeployBranchSmall(Job):
         # Connect interfaces between router and ISP router
         connect_cable_endpoints(router_isp_interface.id, isp_router_interface.id)
 
-        self.logger.info(f"Display additional configuration settings:")
+        # Setup Edge Router
+        self.logger.info(f"Setup Edge Router")
 
         site_prefixes = edge_router.location.prefixes.all()
-        for site_prefix in site_prefixes:
-            self.logger.info(f"Prefix: {site_prefix.prefix}")
-            self.logger.info(f"Gateway: {site_prefix.get_first_available_ip()}")
-            self.logger.info(f"VLAN: {site_prefix.vlan}, VID: {site_prefix.vlan.vid}")
+        site_vlans = edge_router.location.vlans.all().reverse()
 
         for prefix in site_prefixes:
+            self.logger.info(f"Create subinterface for VLAN: {str(prefix.vlan.vid)}")
             int_id = f"{router_interface.name}.{str(prefix.vlan.vid)}"
+
             interface_ip_address = create_ipaddr(prefix)
 
             new_int = Interface(
@@ -146,9 +147,14 @@ class DeployBranchSmall(Job):
 
         self.logger.info(f"Site ASN: {edge_router.location.asn}")
 
-        self.logger.info("Switch Access Interfaces:")
-        for switch_access_interface in switch_access_interfaces:
+        self.logger.info("Setup Switch Access Interfaces:")
+
+        for idx, switch_access_interface in enum(switch_access_interfaces):
             self.logger.info(f"Interface: {switch_access_interface.name}")
+            switch_access_interface.mode = "access"
+            switch_access_interface.description = f"ACCESS VLAN {site_vlans[idx].name}"
+            switch_access_interface.untagged_vlan = site_vlans[idx]
+            switch_access_interface.validated_save()
 
 
 register_jobs(DeployBranchSmall)
