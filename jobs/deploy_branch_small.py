@@ -140,6 +140,7 @@ class DeployBranchSmall(Job):
                 status=planned_status,
                 parent_interface=router_interface,
             )
+            new_int.validated_save()
             new_int.ip_addresses.add(interface_ip_address)
             new_int.validated_save()
 
