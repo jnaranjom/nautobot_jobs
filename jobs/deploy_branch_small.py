@@ -10,6 +10,7 @@ from .cable_helper import connect_cable_endpoints
 from .status_helper import find_status_uuid
 from .ipaddress_helper import create_ipaddr
 from django.contrib.contenttypes.models import ContentType
+from nautobot.dcim.models.device_components import Interface
 
 
 class DeployBranchSmall(Job):
