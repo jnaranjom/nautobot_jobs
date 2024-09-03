@@ -83,16 +83,16 @@ class DeployBranchSmall(Job):
         )
 
         # Update interfaces between router and switch
-        # router_interface.status = active_status
+        router_interface.status = active_status
 
-        # router_interface.validated_save()
+        router_interface.validated_save()
 
-        # switch_interface.status = active_status
+        switch_interface.status = active_status
 
-        # switch_interface.validated_save()
+        switch_interface.validated_save()
 
         # Connect branch devices
-        # connect_cable_endpoints(router_interface.id, switch_interface.id)
+        connect_cable_endpoints(router_interface.id, switch_interface.id)
 
         # Update interfaces between router and ISP router
         try:
@@ -109,16 +109,16 @@ class DeployBranchSmall(Job):
         self.logger.info(
             f"Connect: {edge_router.name} interface: {router_isp_interface} <---> {isp_router.name} interface: {isp_router_interface.name}"
         )
-        # router_isp_interface.status = active_status
+        router_isp_interface.status = active_status
 
-        # router_isp_interface.validated_save()
+        router_isp_interface.validated_save()
 
-        # isp_router_interface.status = active_status
+        isp_router_interface.status = active_status
 
-        # isp_router_interface.validated_save()
+        isp_router_interface.validated_save()
 
         # Connect interfaces between router and ISP router
-        # connect_cable_endpoints(router_isp_interface.id, isp_router_interface.id)
+        connect_cable_endpoints(router_isp_interface.id, isp_router_interface.id)
 
         self.logger.info(f"Display additional configuration settings:")
 
