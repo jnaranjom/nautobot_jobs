@@ -131,6 +131,7 @@ class DeployBranchSmall(Job):
         for prefix in site_prefixes:
             int_id = f"{router_interface.name}.{str(prefix.vlan.vid)}"
             interface_ip_address = create_ipaddr(prefix)
+
             new_int = Interface(
                 device=edge_router,
                 name=int_id,
@@ -138,8 +139,8 @@ class DeployBranchSmall(Job):
                 description=str(prefix.vlan.vid),
                 status=planned_status,
                 parent_interface=router_interface,
+                ip_addresses=interface_ip_address,
             )
-            new_int.ip_addresses.add(interface_ip_address)
             new_int.validated_save()
 
         self.logger.info("Site ASN: %s", edge_router.location.asn)
