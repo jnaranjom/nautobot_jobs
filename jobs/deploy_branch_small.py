@@ -67,7 +67,6 @@ class DeployBranchSmall(Job):
                     switch_temp_interfaces = device.interfaces.filter(
                         status=planned_status
                     ).reverse()[:3]
-                    switch_access_interfaces = switch_temp_interfaces.reverse()
 
                 except Exception as err:
                     self.logger.info(
