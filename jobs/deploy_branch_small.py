@@ -47,9 +47,6 @@ class DeployBranchSmall(Job):
                     router_interface = device.interfaces.filter(status=planned_status)[
                         0
                     ]
-                    router_isp_interface = device.interfaces.filter(
-                        status=planned_status
-                    )[-1]
                 except Exception as err:
                     self.logger.info(
                         f"Unable to find available interfaces (Planned Status) in {device.name}."
@@ -62,9 +59,6 @@ class DeployBranchSmall(Job):
                     switch_interface = device.interfaces.filter(status=planned_status)[
                         0
                     ]
-                    switch_access_interfaces = device.interfaces.filter(
-                        status=planned_status
-                    )[-3:]
 
                 except Exception as err:
                     self.logger.info(
