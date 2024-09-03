@@ -119,12 +119,12 @@ class DeployBranchSmall(Job):
         # Connect interfaces between router and ISP router
         # connect_cable_endpoints(router_isp_interface.id, isp_router_interface.id)
 
-        self.logger.info(f"Display additional configuration settings")
+        self.logger.info(f"Display additional configuration settings:")
 
         site_prefixes = edge_router.location.prefixes.all()
         for site_prefix in site_prefixes:
             self.logger.info(
-                "Prefix: %s", site_prefix.prefix, site_prefix.vlan, site_prefix.vlan_id
+                "Prefix: %s", site_prefix, site_prefix.vlan, site_prefix.vlan_id
             )
             self.logger.info("Gateway: %s", site_prefix.get_first_available_ip())
 
