@@ -130,7 +130,7 @@ class DeployBranchSmall(Job):
         self.logger.info("Site ASN: %s", edge_router.location.asn)
 
         self.logger.info("Switch Access Interfaces: %s", edge_router.location.asn)
-        for switch_access_interface in switch_access_interfaces.reverse():
+        for switch_access_interface in switch_access_interfaces:
             self.logger.info(f"Interface: {switch_access_interface.name}")
 
 
