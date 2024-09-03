@@ -95,7 +95,7 @@ class DeployBranchSmall(Job):
 
         # Update interfaces between router and ISP router
         try:
-            isp_router_interface = device.interfaces.filter(
+            isp_router_interface = isp_router.interfaces.filter(
                 status=planned_status
             ).first()
 
@@ -106,7 +106,7 @@ class DeployBranchSmall(Job):
             raise
 
         self.logger.info(
-            f"Connect: {edge_router.name} interface: {router_isp_interface} <---> {isp_router.name} interface: {isp_router_interface}"
+            f"Connect: {edge_router.name} interface: {router_isp_interface} <---> {isp_router.name} interface: {isp_router_interface.name}"
         )
         router_isp_interface.status = active_status
 
