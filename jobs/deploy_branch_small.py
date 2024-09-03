@@ -147,7 +147,7 @@ class DeployBranchSmall(Job):
 
         self.logger.info("Setup Switch Access Interfaces:")
 
-        for idx, switch_access_interface in enum(switch_access_interfaces):
+        for idx, switch_access_interface in enumerate(switch_access_interfaces):
             self.logger.info(f"Interface: {switch_access_interface.name}")
             switch_access_interface.mode = "access"
             switch_access_interface.description = f"ACCESS VLAN {site_vlans[idx].name}"
