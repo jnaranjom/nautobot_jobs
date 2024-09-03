@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 
 
 def create_ipaddr(prefix):
-    """ Function to create IP Address within a given Prefix
+    """Function to create IP Address within a given Prefix
 
     Args:
         prefix (str): Prefix to carve out IP address

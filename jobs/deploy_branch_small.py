@@ -45,9 +45,13 @@ class DeployBranchSmall(Job):
                 edge_router = device
 
                 try:
-                    router_interface = device.interfaces.filter(status=planned_status)[
-                        0
-                    ]
+                    router_interface = device.interfaces.filter(
+                        status=planned_status
+                    ).first()
+                    router_isp_interface = device.interfaces.filter(
+                        status=planned_status
+                    ).last()
+
                 except Exception as err:
                     self.logger.info(
                         f"Unable to find available interfaces (Planned Status) in {device.name}."
@@ -57,9 +61,13 @@ class DeployBranchSmall(Job):
             elif device.role == switch_role:
                 access_switch = device
                 try:
-                    switch_interface = device.interfaces.filter(status=planned_status)[
-                        0
-                    ]
+                    switch_interface = device.interfaces.filter(
+                        status=planned_status
+                    ).first()
+                    switch_temp_interfaces = device.interfaces.filter(
+                        status=planned_status
+                    ).reverse()[:3]
+                    switch_access_interfaces = switch_temp_interfaces.reverse()
 
                 except Exception as err:
                     self.logger.info(
@@ -74,25 +82,43 @@ class DeployBranchSmall(Job):
             f"Connect: {edge_router.name} interface: {router_interface} <---> {access_switch.name} interface: {switch_interface}"
         )
 
+        # Update interfaces between router and switch
         router_interface.status = active_status
-        router_interface.description = (
-            f"{switch_interface.device}::{switch_interface.name}"
-        )
+
         router_interface.validated_save()
 
         switch_interface.status = active_status
-        switch_interface.description = (
-            f"{router_interface.device}::{router_interface.name}"
-        )
+
         switch_interface.validated_save()
 
         # Connect branch devices
         connect_cable_endpoints(router_interface.id, switch_interface.id)
 
-        # Connect branch to ISP
+        # Update interfaces between router and ISP router
+        try:
+            isp_router_interface = device.interfaces.filter(
+                status=planned_status
+            ).first()
+
+        except Exception as err:
+            self.logger.info(
+                f"Unable to find available interfaces (Planned Status) in {isp_router.name}."
+            )
+            raise
+
         self.logger.info(
-            f"Will connect the Edge Router with this ISP router: {isp_router.name}."
+            f"Connect: {edge_router.name} interface: {router_isp_interface} <---> {isp_router.name} interface: {isp_router_interface}"
         )
+        router_isp_interface.status = active_status
+
+        router_isp_interface.validated_save()
+
+        isp_router_interface.status = active_status
+
+        isp_router_interface.validated_save()
+
+        # Connect interfaces between router and ISP router
+        connect_cable_endpoints(router_isp_interface.id, isp_router_interface.id)
 
 
 register_jobs(DeployBranchSmall)
