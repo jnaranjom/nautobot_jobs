@@ -30,7 +30,7 @@ class DeployBranchSmall(Job):
     description = "Job to deploy a new branch in Nautobot"
     dryrun_default = True
 
-    def run(self, branch_location, isp_router):
+    def run(self, branch_location, isp_router, wan_prefix):
         """Main function"""
 
         branch_devices = Device.objects.filter(location=branch_location)
