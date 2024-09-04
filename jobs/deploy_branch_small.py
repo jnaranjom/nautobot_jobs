@@ -18,6 +18,7 @@ class DeployBranchSmall(Job):
 
     branch_location = ObjectVar(model=Location, query_params={"tenant": "Branch"})
     isp_router = ObjectVar(model=Device, query_params={"tenant": "ISP"})
+    wan_prefix = ObjectVar(model=Prefix, query_params={"role": "wan:p2p:prefix"})
 
     class Meta:
         """Jobs Metadata"""
