@@ -155,10 +155,38 @@ class DeployBranchSmall(Job):
         # Setup BGP for Edge Router
 
         router_asn = AutonomousSystem.objects.get(asn=edge_router.location.asn)
+
         router_bgp_instance = BGPRoutingInstance(
             device=edge_router, autonomous_system=router_asn, status=active_status
         )
         router_bgp_instance.validated_save()
+
+        isp_router_bgp_instance = BGPRoutingInstance.objects.get(device=isp_router)
+
+        endpoint_a = PeerEndpoint(
+            routing_instance=router_bgp_instance,
+            enabled=True,
+            source_ip=router_isp_interface_ip,
+        )
+        endpoint_z = PeerEndpoint(
+            routing_instance=isp_router_bgp_instance,
+            enabled=True,
+            source_ip=isp_router_interface_ip,
+        )
+
+        peering = Peering.objects.create(status=active_status)
+        peering.validated_save()
+
+        endpoint_a.peering = peering
+        endpoint_a.validated_save()
+
+        endpoint_z.peering = peering
+        endpoint_z.validated_save()
+
+        peering.update_peers()
+        peering.validate_peers()
+
+        # Setup Switch access interfaces
 
         self.logger.info("Setup Switch Access Interfaces:")
 
