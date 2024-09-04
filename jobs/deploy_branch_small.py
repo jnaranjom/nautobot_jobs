@@ -154,6 +154,7 @@ class DeployBranchSmall(Job):
 
         # Setup BGP for Edge Router
 
+        self.logger.info("Setup BGP session:")
         router_asn = AutonomousSystem.objects.get(asn=edge_router.location.asn)
 
         router_bgp_instance = BGPRoutingInstance(
