@@ -11,7 +11,7 @@ from .status_helper import find_status_uuid
 from .ipaddress_helper import create_ipaddr
 from django.contrib.contenttypes.models import ContentType
 from nautobot.dcim.models.device_components import Interface
-from nautobot_bgp_models.models import AutonomousSystem, BGPRoutingInstance
+from nautobot_bgp_models.models import AutonomousSystem, BGPRoutingInstance, PeerEndpoint, Peering
 
 
 class DeployBranchSmall(Job):
