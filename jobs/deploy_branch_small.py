@@ -121,7 +121,7 @@ class DeployBranchSmall(Job):
         )
 
         router_isp_interface_ip = create_ipaddr(wan_prefix)
-        router_interface.ip_addresses.add(router_isp_interface_ip)
+        router_isp_interface.ip_addresses.add(router_isp_interface_ip)
         router_isp_interface.status = active_status
         router_isp_interface.validated_save()
 
