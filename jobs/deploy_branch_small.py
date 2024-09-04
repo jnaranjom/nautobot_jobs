@@ -11,6 +11,7 @@ from .status_helper import find_status_uuid
 from .ipaddress_helper import create_ipaddr
 from django.contrib.contenttypes.models import ContentType
 from nautobot.dcim.models.device_components import Interface
+from nautobot_bgp_models.models import AutonomousSystem, BGPRoutingInstance
 
 
 class DeployBranchSmall(Job):
@@ -18,7 +19,9 @@ class DeployBranchSmall(Job):
 
     branch_location = ObjectVar(model=Location, query_params={"tenant": "Branch"})
     isp_router = ObjectVar(model=Device, query_params={"tenant": "ISP"})
-    wan_prefix = ObjectVar(model=Prefix, query_params={"role": "wan:p2p:prefix", "status": "Active"})
+    wan_prefix = ObjectVar(
+        model=Prefix, query_params={"role": "wan:p2p:prefix", "status": "Active"}
+    )
 
     class Meta:
         """Jobs Metadata"""
@@ -111,12 +114,15 @@ class DeployBranchSmall(Job):
         self.logger.info(
             f"Connect: {edge_router.name} interface: {router_isp_interface} <---> {isp_router.name} interface: {isp_router_interface.name}"
         )
-        router_isp_interface.status = active_status
 
+        router_isp_interface_ip = create_ipaddr(wan_prefix)
+        router_interface.ip_addresses.add(router_isp_interface_ip)
+        router_isp_interface.status = active_status
         router_isp_interface.validated_save()
 
+        isp_router_interface_ip = create_ipaddr(wan_prefix)
+        isp_router_interface.ip_addresses.add(isp_router_interface_ip)
         isp_router_interface.status = active_status
-
         isp_router_interface.validated_save()
 
         # Connect interfaces between router and ISP router
@@ -145,6 +151,14 @@ class DeployBranchSmall(Job):
             new_int.validated_save()
             new_int.ip_addresses.add(interface_ip_address)
             new_int.validated_save()
+
+        # Setup BGP for Edge Router
+
+        router_asn = AutonomousSystem.objects.get(asn=edge_router.location.asn)
+        router_bgp_instance = BGPRoutingInstance(
+            device=edge_router, autonomous_system=router_asn, status=active_status
+        )
+        router_bgp_instance.validated_save()
 
         self.logger.info("Setup Switch Access Interfaces:")
 
