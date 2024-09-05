@@ -1,15 +1,10 @@
 """ DEPLOY NEW SMALL BRANCH (1 Router/ 1 Switch)"""
 
-from nautobot.apps.jobs import Job, ObjectVar, MultiObjectVar, register_jobs
+from nautobot.apps.jobs import Job, ObjectVar, register_jobs
 from nautobot.dcim.models.locations import Location
 from nautobot.extras.models.roles import Role
-from nautobot.dcim.models import Device, Cable
-from nautobot.ipam.models import IPAddress, Prefix
-from nautobot.extras.models import Status
-from .cable_helper import connect_cable_endpoints
-from .status_helper import find_status_uuid
-from .ipaddress_helper import create_ipaddr
-from django.contrib.contenttypes.models import ContentType
+from nautobot.dcim.models import Device
+from nautobot.ipam.models import Prefix
 from nautobot.dcim.models.device_components import Interface
 from nautobot_bgp_models.models import (
     AutonomousSystem,
@@ -17,6 +12,9 @@ from nautobot_bgp_models.models import (
     PeerEndpoint,
     Peering,
 )
+from .cable_helper import connect_cable_endpoints
+from .status_helper import find_status_uuid
+from .ipaddress_helper import create_ipaddr
 
 
 class DeployBranchSmall(Job):
@@ -90,7 +88,8 @@ class DeployBranchSmall(Job):
         # Update interfaces between router and switch
         try:
             self.logger.info(
-                f"Connect: {edge_router.name} interface: {router_interface} <---> {access_switch.name} interface: {switch_interface}"
+                f"""Connect: {edge_router.name} interface: {router_interface} <--->
+                    {access_switch.name} interface: {switch_interface}"""
             )
 
             router_interface.status = active_status
@@ -122,7 +121,8 @@ class DeployBranchSmall(Job):
             raise
 
         self.logger.info(
-            f"Connect: {edge_router.name} interface: {router_isp_interface} <---> {isp_router.name} interface: {isp_router_interface.name}"
+            f"""Connect: {edge_router.name} interface: {router_isp_interface} <--->
+                {isp_router.name} interface: {isp_router_interface.name}"""
         )
 
         # Allocate IPs and connect interfaces between router and ISP router
