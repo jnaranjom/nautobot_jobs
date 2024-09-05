@@ -87,22 +87,27 @@ class DeployBranchSmall(Job):
             else:
                 self.logger.info(f"Unable to find device type for {device.name}.")
 
-        self.logger.info(
-            f"Connect: {edge_router.name} interface: {router_interface} <---> {access_switch.name} interface: {switch_interface}"
-        )
-
         # Update interfaces between router and switch
-        router_interface.status = active_status
+        try:
+            self.logger.info(
+                f"Connect: {edge_router.name} interface: {router_interface} <---> {access_switch.name} interface: {switch_interface}"
+            )
 
-        router_interface.validated_save()
+            router_interface.status = active_status
+            router_interface.validated_save()
 
-        switch_interface.status = active_status
-        switch_interface.mode = "tagged"
+            switch_interface.status = active_status
+            switch_interface.mode = "tagged"
+            switch_interface.validated_save()
 
-        switch_interface.validated_save()
+            # Connect branch devices
+            connect_cable_endpoints(router_interface.id, switch_interface.id)
 
-        # Connect branch devices
-        connect_cable_endpoints(router_interface.id, switch_interface.id)
+        except Exception as err:
+            self.logger.info(
+                f"Unable to connect {edge_router.name} with {access_switch.name}."
+            )
+            raise
 
         # Update interfaces between router and ISP router
         try:
@@ -120,21 +125,28 @@ class DeployBranchSmall(Job):
             f"Connect: {edge_router.name} interface: {router_isp_interface} <---> {isp_router.name} interface: {isp_router_interface.name}"
         )
 
-        router_isp_interface_ip = create_ipaddr(wan_prefix)
-        router_isp_interface.ip_addresses.add(router_isp_interface_ip)
-        router_isp_interface.status = active_status
-        router_isp_interface.validated_save()
+        # Allocate IPs and connect interfaces between router and ISP router
+        try:
+            router_isp_interface_ip = create_ipaddr(wan_prefix)
+            router_isp_interface.ip_addresses.add(router_isp_interface_ip)
+            router_isp_interface.status = active_status
+            router_isp_interface.validated_save()
 
-        isp_router_interface_ip = create_ipaddr(wan_prefix)
-        isp_router_interface.ip_addresses.add(isp_router_interface_ip)
-        isp_router_interface.status = active_status
-        isp_router_interface.validated_save()
+            isp_router_interface_ip = create_ipaddr(wan_prefix)
+            isp_router_interface.ip_addresses.add(isp_router_interface_ip)
+            isp_router_interface.status = active_status
+            isp_router_interface.validated_save()
 
-        # Connect interfaces between router and ISP router
-        connect_cable_endpoints(router_isp_interface.id, isp_router_interface.id)
+            connect_cable_endpoints(router_isp_interface.id, isp_router_interface.id)
+
+        except Exception as err:
+            self.logger.info(
+                f"Unable to connect {edge_router.name} with {isp_router.name}"
+            )
+            raise
 
         # Setup Edge Router
-        self.logger.info(f"Setup Edge Router")
+        self.logger.info(f"Create {edge_router.name} objects:")
 
         site_prefixes = edge_router.location.prefixes.all()
         site_vlans = edge_router.location.vlans.all().reverse()
@@ -149,7 +161,7 @@ class DeployBranchSmall(Job):
                 device=edge_router,
                 name=int_id,
                 type="virtual",
-                description=str(prefix.vlan.vid),
+                description=f"VLAN::{prefix.vlan.vid}",
                 status=planned_status,
                 parent_interface=router_interface,
             )
@@ -159,7 +171,7 @@ class DeployBranchSmall(Job):
 
         # Setup BGP for Edge Router
 
-        self.logger.info("Setup BGP session:")
+        self.logger.info(f"Build BGP {edge_router.name} sessions")
         router_asn = AutonomousSystem.objects.get(asn=edge_router.location.asn)
 
         router_bgp_instance = BGPRoutingInstance(
@@ -194,12 +206,14 @@ class DeployBranchSmall(Job):
 
         # Setup Switch access interfaces
 
-        self.logger.info("Setup Switch Access Interfaces:")
+        self.logger.info(f"Setup Switch {access_switch.name} access interfaces:")
 
         for idx, switch_access_interface in enumerate(switch_access_interfaces):
             self.logger.info(f"Interface: {switch_access_interface.name}")
             switch_access_interface.mode = "access"
-            switch_access_interface.description = f"ACCESS VLAN {site_vlans[idx].name}"
+            switch_access_interface.description = (
+                f"VLAN::{site_vlans[idx].name}::{site_vlans[idx].vid}"
+            )
             switch_access_interface.untagged_vlan = site_vlans[idx]
             switch_access_interface.validated_save()
 
