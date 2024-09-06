@@ -146,13 +146,13 @@ class DeployBranchSmall(Job):
             raise
 
         # Setup Edge Router
-        self.logger.info(f"Create {edge_router.name} objects:")
+        self.logger.info(f"Create objects for: {edge_router.name}.")
 
         site_prefixes = edge_router.location.prefixes.all()
         site_vlans = edge_router.location.vlans.all().reverse()
 
         for prefix in site_prefixes:
-            self.logger.info(f"Create subinterface for VLAN: {str(prefix.vlan.vid)}")
+            self.logger.info(f"  Create subinterface for VLAN: {str(prefix.vlan.vid)}")
             int_id = f"{router_interface.name}.{str(prefix.vlan.vid)}"
 
             interface_ip_address = create_ipaddr(prefix)
@@ -171,9 +171,10 @@ class DeployBranchSmall(Job):
 
         # Setup BGP for Edge Router
 
-        self.logger.info(f"Build BGP {edge_router.name} sessions")
-        router_asn = AutonomousSystem.objects.get(asn=edge_router.location.asn)
+        self.logger.info(f"Build BGP sessions for: {edge_router.name}")
 
+        # Create BGP endpoints
+        router_asn = AutonomousSystem.objects.get(asn=edge_router.location.asn)
         router_bgp_instance = BGPRoutingInstance(
             device=edge_router, autonomous_system=router_asn, status=active_status
         )
@@ -192,6 +193,7 @@ class DeployBranchSmall(Job):
             source_ip=isp_router_interface_ip,
         )
 
+        # Create BGP peerings
         peering = Peering.objects.create(status=active_status)
         peering.validated_save()
 
@@ -206,16 +208,23 @@ class DeployBranchSmall(Job):
 
         # Setup Switch access interfaces
 
-        self.logger.info(f"Setup Switch {access_switch.name} access interfaces:")
+        self.logger.info(f"Setup switch {access_switch.name} access interfaces:")
 
-        for idx, switch_access_interface in enumerate(switch_access_interfaces):
-            self.logger.info(f"Interface: {switch_access_interface.name}")
-            switch_access_interface.mode = "access"
-            switch_access_interface.description = (
-                f"VLAN::{site_vlans[idx].name}::{site_vlans[idx].vid}"
+        try:
+            for idx, switch_access_interface in enumerate(switch_access_interfaces):
+                self.logger.info(f"  Interface: {switch_access_interface.name}")
+                switch_access_interface.mode = "access"
+                switch_access_interface.description = (
+                    f"VLAN::{site_vlans[idx].name}::{site_vlans[idx].vid}"
+                )
+                switch_access_interface.untagged_vlan = site_vlans[idx]
+                switch_access_interface.validated_save()
+
+        except Exception as err:
+            self.logger.info(
+                f"Unable to set VLANS on {access_switch.name} access ports."
             )
-            switch_access_interface.untagged_vlan = site_vlans[idx]
-            switch_access_interface.validated_save()
+            raise
 
 
 register_jobs(DeployBranchSmall)
