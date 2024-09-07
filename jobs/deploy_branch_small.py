@@ -29,8 +29,8 @@ class DeployBranchSmall(Job):
     class Meta:
         """Jobs Metadata"""
 
-    name = "Deploy small branch"
-    description = "Job to deploy a new branch in Nautobot"
+    name = "Deploy Devices on small branch"
+    description = "Job to deploy devices on a new branch in Nautobot"
     dryrun_default = True
 
     def run(self, branch_location, isp_router, wan_prefix):
@@ -68,13 +68,14 @@ class DeployBranchSmall(Job):
 
             elif device.role == switch_role:
                 access_switch = device
+                vlan_count = access_switch.location.vlans.count()
                 try:
                     switch_interface = device.interfaces.filter(
                         status=planned_status
                     ).first()
                     switch_access_interfaces = device.interfaces.filter(
                         status=planned_status
-                    ).reverse()[:3]
+                    ).reverse()[:vlan_count]
 
                 except Exception as err:
                     self.logger.info(
