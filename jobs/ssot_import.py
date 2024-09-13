@@ -17,7 +17,7 @@ class ImportLocations(Job):
     def run(self):
         """Main function"""
 
-        locations = requests.get("http://127.0.0.1:8000/api/v1/locations")
+        locations = requests.get("http://192.168.2.245:8000/api/v1/locations")
 
         self.logger.info(f"Locations on CMDB {locations}")
 
