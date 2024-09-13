@@ -1,0 +1,11 @@
+[
+    {
+        "name": "dal-br01",
+        "location_type": "Branch",
+        "parent": "Dallas",
+        "tenant": "Branch",
+        "zip_code": "75001",
+        "address": "123 Main Street",
+        "description": "Downtown Dallas Branch",
+    }
+]

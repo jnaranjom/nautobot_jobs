@@ -2,6 +2,7 @@
 
 from nautobot.apps.jobs import Job, register_jobs
 import requests
+import json
 
 
 class ImportLocations(Job):
@@ -18,8 +19,9 @@ class ImportLocations(Job):
         """Main function"""
 
         locations = requests.get("http://192.168.2.245:8000/api/v1/locations")
+        response = locations.json()
 
-        self.logger.info(f"Locations on CMDB {locations}")
+        self.logger.info(f"Locations on CMDB {response}")
 
 
 register_jobs(ImportLocations)
