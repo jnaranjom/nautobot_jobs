@@ -22,7 +22,7 @@ class ImportLocations(Job):
         location_list = locations.json()
 
         for location in location_list:
-            self.logger.info(f"Locations on CMDB {location['name']}")
+            self.logger.info(f"name: {location['name']}")
 
 
 register_jobs(ImportLocations)
