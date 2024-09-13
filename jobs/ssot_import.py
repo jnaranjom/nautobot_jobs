@@ -1,6 +1,6 @@
 """ JOB TO IMPORT OBJECTS FROM CMDB """
 
-from nautobot.apps.jobs import Job
+from nautobot.apps.jobs import Job, register_jobs
 import requests
 
 
