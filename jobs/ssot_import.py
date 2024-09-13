@@ -19,9 +19,10 @@ class ImportLocations(Job):
         """Main function"""
 
         locations = requests.get("http://192.168.2.245:8000/api/v1/locations")
-        response = locations.json()
+        location_list = locations.json()
 
-        self.logger.info(f"Locations on CMDB {response}")
+        for location in location_list:
+            self.logger.info(f"Locations on CMDB {location['name']}")
 
 
 register_jobs(ImportLocations)
