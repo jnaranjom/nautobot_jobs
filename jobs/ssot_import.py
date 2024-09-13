@@ -7,7 +7,6 @@ import requests
 class ImportLocations(Job):
     """Import Locations from CMDB"""
 
-
     class Meta:
         """Jobs Metadata"""
 
@@ -18,11 +17,9 @@ class ImportLocations(Job):
     def run(self):
         """Main function"""
 
-        locations = requests.get('http://127.0.0.1:8000/api/v1/locations')
+        locations = requests.get("http://127.0.0.1:8000/api/v1/locations")
 
-        self.logger.info(
-                        f"Locations on CMDB {locations}"
-                    )
+        self.logger.info(f"Locations on CMDB {locations}")
 
 
 register_jobs(ImportLocations)
