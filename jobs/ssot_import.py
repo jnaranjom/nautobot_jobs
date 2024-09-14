@@ -28,7 +28,7 @@ class ImportLocations(Job):
             self.logger.info(f" Tenant: {location['tenant']}")
             try:
                 existing_locations = Location.objects.get(
-                    name=location["parent"], tenant=location["tenant"]
+                    name=location["name"], tenant=location["tenant"]
                 )
                 self.logger.info(f" Location {location['name']} found")
             except:
