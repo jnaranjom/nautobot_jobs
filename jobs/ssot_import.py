@@ -23,16 +23,18 @@ class ImportLocations(Job):
         location_list = locations.json()
 
         for location in location_list:
-
-            self.logger.info(f" Parent: {location['parent']}")
-            self.logger.info(f" Tenant: {location['tenant']}")
+            self.logger.info(f" Checking Location: {location['name']}")
             try:
                 existing_locations = Location.objects.get(
-                    name=location["name"], tenant__name=location["tenant"]
+                    name=location["name"],
+                    tenant__name=location["tenant"],
+                    parent__name=location["parent"],
                 )
                 self.logger.info(f" Location {location['name']} found")
             except:
-                self.logger.info(f" Location {location['name']} not found")
+                self.logger.info(
+                    f" Location {location['name']} not found, will add new location."
+                )
 
 
 register_jobs(ImportLocations)
