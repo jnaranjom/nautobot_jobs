@@ -1,6 +1,7 @@
 """ JOB TO IMPORT OBJECTS FROM CMDB """
 
 from nautobot.apps.jobs import Job, register_jobs
+from nautobot.dcim.models.locations import Location
 import requests
 import json
 
@@ -22,9 +23,16 @@ class ImportLocations(Job):
         location_list = locations.json()
 
         for location in location_list:
-            self.logger.info(f"Name: {location['name']}")
+
             self.logger.info(f" Parent: {location['parent']}")
             self.logger.info(f" Tenant: {location['tenant']}")
+            try:
+                existing_locations = Location.objects.get(
+                    name=location["parent"], tenant=location["tenant"]
+                )
+                self.logger.info(f" Location {location['name']} found")
+            except:
+                self.logger.info(f" Location {location['name']} not found")
 
 
 register_jobs(ImportLocations)
