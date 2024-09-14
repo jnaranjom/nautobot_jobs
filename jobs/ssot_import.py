@@ -65,7 +65,8 @@ class ImportDevices(Job):
                 self.logger.info(f" Device {device['name']} found. Skipping...")
             except:
                 self.logger.info(
-                    f" Device {device['name']} not found, will add new device."
+                    f"""Device {device['name']} not found, will add new device.
+                        This is a {device['manufacturer']} {device['device_type']}"""
                 )
 
 
