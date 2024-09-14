@@ -2,6 +2,7 @@
 
 from nautobot.apps.jobs import Job, register_jobs
 from nautobot.dcim.models.locations import Location
+from nautobot.dcim.models import Device
 import requests
 import json
 
