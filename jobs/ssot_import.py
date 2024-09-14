@@ -26,7 +26,7 @@ class ImportLocations(Job):
         for location in location_list:
             self.logger.info(f" Checking Location: {location['name']}")
             try:
-                existing_locations = Location.objects.get(
+                validate_location = Location.objects.get(
                     name=location["name"],
                     tenant__name=location["tenant"],
                     parent__name=location["parent"],
@@ -57,15 +57,16 @@ class ImportDevices(Job):
         for device in device_list:
             self.logger.info(f" Checking Device: {device['name']}")
             try:
-                existing_devices = Device.objects.get(
+                validate_device = Device.objects.get(
                     name=device["name"],
                     tenant__name=device["tenant"],
                     location__name=device["location"],
                 )
-                self.logger.info(f" Device {device['name']} found")
+                self.logger.info(f" Device {device['name']} found. Skipping...")
             except:
                 self.logger.info(
-                    f" Device {device['name']} not found, will add new device."
+                    f"""Device {device['name']} not found, will add new device.
+                        This is a {device['manufacturer']} {device['device_type'].upper()}"""
                 )
 
 
