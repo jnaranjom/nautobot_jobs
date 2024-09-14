@@ -22,7 +22,9 @@ class ImportLocations(Job):
         location_list = locations.json()
 
         for location in location_list:
-            self.logger.info(f"name: {location['name']}")
+            self.logger.info(f"Name: {location['name']}")
+            self.logger.info(f" Parent: {location['parent']}")
+            self.logger.info(f" Tenant: {location['tenant']}")
 
 
 register_jobs(ImportLocations)
