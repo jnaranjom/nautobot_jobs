@@ -3,6 +3,7 @@
 from nautobot.apps.jobs import Job, register_jobs
 from nautobot.dcim.models.locations import Location
 from nautobot.dcim.models import Device
+from .location_helper import create_location
 import requests
 import json
 
@@ -33,8 +34,14 @@ class ImportLocations(Job):
                 )
                 self.logger.info(f" Location {location['name']} found")
             except:
+                new_location = create_location(
+                    location["name"],
+                    location["location_type"],
+                    location["tenant"],
+                    location["parent"],
+                )
                 self.logger.info(
-                    f" Location {location['name']} not found, will add new location."
+                    f" New location {new_location.name} created successfully."
                 )
 
 
