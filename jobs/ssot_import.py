@@ -7,7 +7,7 @@ from .location_helper import create_location
 import requests
 import json
 
-URL = "http://192.168.2.245:8000/api/v1"
+CMDB_URL = "http://192.168.2.245:8000/api/v1"
 
 
 class ImportLocations(Job):
@@ -23,7 +23,7 @@ class ImportLocations(Job):
     def run(self):
         """Main function"""
 
-        locations = requests.get(f"{URL}/locations")
+        locations = requests.get(f"{CMDB_URL}/locations")
         location_list = locations.json()
 
         for location in location_list:
@@ -65,7 +65,7 @@ class ImportDevices(Job):
     def run(self):
         """Main function"""
 
-        devices = requests.get(f"{URL}/devices")
+        devices = requests.get(f"{CMDB_URL}/devices")
         device_list = devices.json()
 
         for device in device_list:
