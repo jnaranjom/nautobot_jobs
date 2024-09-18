@@ -34,15 +34,16 @@ class ImportLocations(Job):
                 )
                 self.logger.info(f" Location {location['name']} found")
             except:
-                new_location = create_location(
-                    location["name"],
-                    location["location_type"],
-                    location["tenant"],
-                    location["parent"],
-                )
-                self.logger.info(
-                    f" New location {new_location.name} created successfully."
-                )
+                if location["status"] == "Staging":
+                    new_location = create_location(
+                        location["name"],
+                        location["location_type"],
+                        location["tenant"],
+                        location["parent"],
+                    )
+                    self.logger.info(
+                        f" New location {new_location.name} created successfully."
+                    )
 
 
 class ImportDevices(Job):

@@ -35,4 +35,4 @@ def create_location(loc_name, loc_type, loc_tenant, loc_parent):
         return new_location
 
     except ValidationError as err:
-        raise AbortTransacion(f"Failed to create new Location")
+        raise AbortTransacion(f"Failed to create location")
