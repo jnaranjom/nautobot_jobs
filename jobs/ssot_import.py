@@ -34,7 +34,7 @@ class ImportLocations(Job):
                     tenant__name=location["tenant"],
                     parent__name=location["parent"],
                 )
-                self.logger.info(f" Location {location['name']} found")
+                self.logger.info(f"-> Location {location['name']} found")
             except:
                 if location["status"] == "Staging":
                     new_location = create_location(
@@ -44,7 +44,7 @@ class ImportLocations(Job):
                         location["parent"],
                     )
                     self.logger.info(
-                        f" New location {new_location.name} created successfully."
+                        f"-> New location {new_location.name} created successfully."
                     )
                 else:
                     self.logger.info(
