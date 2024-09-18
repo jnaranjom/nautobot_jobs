@@ -19,6 +19,7 @@ def create_location(loc_name, loc_type, loc_tenant, loc_parent):
         location_parent = Location.objects.get(name=loc_parent)
         location_tenant = Tenant.objects.get(name=loc_tenant)
         location_type = LocationType.objects.get(name=loc_type)
+        location_description = f"{loc_parent} {loc_type} {loc_name}"
 
         new_location = Location(
             location_type=location_type,
@@ -26,6 +27,7 @@ def create_location(loc_name, loc_type, loc_tenant, loc_parent):
             status=staging_status,
             tenant=location_tenant,
             parent=location_parent,
+            description=location_description,
         )
 
         new_location.validated_save()
