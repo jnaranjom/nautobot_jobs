@@ -46,7 +46,7 @@ class ImportLocations(Job):
                     )
                 else:
                     self.logger.info(
-                        f" New location {new_location.name} not ready for onboarding. Current status: {location['status']}"
+                        f" New location {location['name']} not ready for onboarding. Current status: {location['status']}"
                     )
 
 
