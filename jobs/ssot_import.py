@@ -67,6 +67,12 @@ class ImportDevices(Job):
     name = "Get List of devices from the CMDB"
     description = "Job to read the devices from the CMDB"
     dryrun_default = True
+    has_sensitive_variables = False
+    approval_required = False
+    read_only = False
+    hidden = False
+    soft_time_limit = 300
+    time_limit = 600
 
     def run(self):
         """Main function"""
