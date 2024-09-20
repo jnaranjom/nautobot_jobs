@@ -2,7 +2,10 @@
 
 from nautobot.extras.models import Status
 from django.core.exceptions import ValidationError
-from nautobot.extras.exceptions import AbortTransaction
+
+class AbortTransaction(Exception):
+    """Custom exception for aborting transactions"""
+    pass
 
 
 def find_status_uuid(status_name):
