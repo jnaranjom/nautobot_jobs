@@ -3,8 +3,10 @@
 from nautobot.extras.models import Status
 from django.core.exceptions import ValidationError
 
+
 class AbortTransaction(Exception):
     """Custom exception for aborting transactions"""
+
     pass
 
 

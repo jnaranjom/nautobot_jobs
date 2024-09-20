@@ -16,11 +16,7 @@ class SetManagementIP(Job):
     location = ObjectVar(model=Location)
 
     mgmt_switch = ObjectVar(
-        model=Device,
-        query_params={
-            "role": "management:switch",
-            "status": "Active"
-        }
+        model=Device, query_params={"role": "management:switch", "status": "Active"}
     )
 
     devices = MultiObjectVar(model=Device, query_params={"location": "$location"})
