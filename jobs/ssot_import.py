@@ -33,8 +33,8 @@ class ImportLocations(Job):
         location_list = locations.json()
 
         for location in location_list:
-            self.logger.info(f" Checking Location: {location['name']}")
             if location["location_type"] not in ["Country", "State", "City"]:
+                self.logger.info(f" Checking Location: {location['name']}")
                 try:
                     validate_location = Location.objects.get(
                         name=location["name"],
