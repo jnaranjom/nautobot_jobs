@@ -86,15 +86,26 @@ class ImportDevices(Job):
             try:
                 validate_device = Device.objects.get(
                     name=device["name"],
-                    tenant__name=device["tenant"],
-                    location__name=device["location"],
                 )
                 self.logger.info(f" Device {device['name']} found. Skipping...")
             except:
-                self.logger.info(
-                    f"""Device {device['name']} not found, will add new device.
-                        This is a {device['manufacturer']} {device['device_type'].upper()}"""
-                )
+                if devices["status"] == "Staged":
+                    new_device = create_device(
+                        device["name"],
+                        device["serial_number"],
+                        device["role"],
+                        device["device_type"],
+                        device["location"],
+                        device["tenant"],
+                        device["description"],
+                    )
+                    self.logger.info(
+                        f"-> New device {new_device.name} created successfully."
+                    )
+                else:
+                    self.logger.info(
+                        f" New device {device['name']} not ready for onboarding. Current status: {device['status']}"
+                    )
 
 
 register_jobs(ImportLocations, ImportDevices)
