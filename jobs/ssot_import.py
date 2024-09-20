@@ -34,28 +34,29 @@ class ImportLocations(Job):
 
         for location in location_list:
             self.logger.info(f" Checking Location: {location['name']}")
-            try:
-                validate_location = Location.objects.get(
-                    name=location["name"],
-                    tenant__name=location["tenant"],
-                    parent__name=location["parent"],
-                )
-                self.logger.info(f"-> Location {location['name']} found")
-            except:
-                if location["status"] == "Staging":
-                    new_location = create_location(
-                        location["name"],
-                        location["location_type"],
-                        location["tenant"],
-                        location["parent"],
+            if location["location_type"] not in ["Country", "State", "City"]:
+                try:
+                    validate_location = Location.objects.get(
+                        name=location["name"],
+                        tenant__name=location["tenant"],
+                        parent__name=location["parent"],
                     )
-                    self.logger.info(
-                        f"-> New location {new_location.name} created successfully."
-                    )
-                else:
-                    self.logger.info(
-                        f" New location {location['name']} not ready for onboarding. Current status: {location['status']}"
-                    )
+                    self.logger.info(f"-> Location {location['name']} found")
+                except:
+                    if location["status"] == "Staging":
+                        new_location = create_location(
+                            location["name"],
+                            location["location_type"],
+                            location["tenant"],
+                            location["parent"],
+                        )
+                        self.logger.info(
+                            f"-> New location {new_location.name} created successfully."
+                        )
+                    else:
+                        self.logger.info(
+                            f" New location {location['name']} not ready for onboarding. Current status: {location['status']}"
+                        )
 
 
 class ImportDevices(Job):
