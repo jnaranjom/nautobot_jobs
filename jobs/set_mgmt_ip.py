@@ -15,16 +15,29 @@ class SetManagementIP(Job):
 
     location = ObjectVar(model=Location)
 
-    mgmt_switch = ObjectVar(model=Device, query_params={"role": "management:switch"})
+    mgmt_switch = ObjectVar(
+        model=Device,
+        query_params={
+            "role": "management:switch",
+            "status": "Active"
+        }
+    )
 
     devices = MultiObjectVar(model=Device, query_params={"location": "$location"})
 
     class Meta:
         """Jobs Metadata"""
 
-    name = "Set MGMT IP"
-    description = "Job to set the Management on the devices"
-    dryrun_default = True
+        name = "Set MGMT IP"
+        description = "Job to set the Management on the devices"
+        dryrun_default = True
+        has_sensitive_variables = False
+        approval_required = False
+        read_only = False
+        hidden = False
+        soft_time_limit = 300
+        time_limit = 600
+        field_order = ["location", "mgmt_switch", "devices"]
 
     def run(self, location, mgmt_switch, devices):
         """Main function"""

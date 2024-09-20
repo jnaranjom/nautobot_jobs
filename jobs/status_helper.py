@@ -2,6 +2,7 @@
 
 from nautobot.extras.models import Status
 from django.core.exceptions import ValidationError
+from nautobot.extras.exceptions import AbortTransaction
 
 
 def find_status_uuid(status_name):
@@ -14,9 +15,10 @@ def find_status_uuid(status_name):
         status_id: UUID for the Status
     """
     try:
-        status_id = Status.objects.get(name=status_name)
+        status = Status.objects.get(name=status_name)
+        status_id = status.id
 
     except ValidationError as err:
-        raise AbortTransacion(f"Failed to retrieve {status_name} id.")
+        raise AbortTransaction(f"Failed to retrieve {status_name} id.")
 
     return status_id
