@@ -6,9 +6,8 @@ from nautobot.dcim.models import Device
 from .location_helper import create_location
 import requests
 import json
-import os
 
-CMDB_URL = os.getenv("CMDB_URL")
+CMDB_URL = "http://192.168.2.245:8000/api/v1"
 
 
 class ImportLocations(Job):
