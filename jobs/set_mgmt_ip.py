@@ -37,7 +37,6 @@ class SetManagementIP(Job):
         hidden = False
         soft_time_limit = 300
         time_limit = 600
-        field_order = ["location", "mgmt_switch", "devices"]
 
     def run(self, location, mgmt_switch, devices):
         """Main function"""
