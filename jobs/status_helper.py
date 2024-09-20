@@ -21,9 +21,8 @@ def find_status_uuid(status_name):
     """
     try:
         status = Status.objects.get(name=status_name)
-        status_id = status.id
 
     except ValidationError as err:
         raise AbortTransaction(f"Failed to retrieve {status_name} id.")
 
-    return status_id
+    return status
