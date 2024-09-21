@@ -22,10 +22,13 @@ def create_device(
 
         staging_status = find_status_uuid("Staged")
         device_role = Role.objects.get(name=dev_role)
-        self.logger.info(f" HERE")
+        self.logger.info(f" HERE 1")
         device_type = DeviceType.objects.get(name=dev_type)
+        self.logger.info(f" HERE 2")
         device_location = Location.objects.get(name=dev_location)
+        self.logger.info(f" HERE 3")
         device_tenant = Tenant.objects.get(name=dev_tenant)
+        self.logger.info(f" HERE 4")
         device_description = f"{dev_description}"
 
         new_device = Device(
