@@ -22,7 +22,8 @@ def create_device(
 
         staging_status = find_status_uuid("Staged")
         self.logger.info(f"{dev_role}")
-        device_role = Role.objects.get(name=dev_role)
+        #device_role = Role.objects.get(name=dev_role)
+        device_role = Role.objects.get(name="branch:access:switch")
         device_type = DeviceType.objects.get(name=dev_type)
 
         device_location = Location.objects.get(name=dev_location)
