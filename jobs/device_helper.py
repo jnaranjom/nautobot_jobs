@@ -1,7 +1,7 @@
 """ IP ADDRESS HELPER """
 
 from nautobot.dcim.models.locations import Location
-from nautobot.dcim.models import Device
+from nautobot.dcim.models import Device, DeviceType
 from nautobot.extras.models.roles import Role
 from nautobot.tenancy.models import Tenant
 from .status_helper import find_status_uuid
