@@ -35,7 +35,6 @@ def create_device(
             status=staging_status,
             tenant=device_tenant,
         )
-        self.logger.info(f" OR HERE")
         new_device.validated_save()
 
         return new_device
