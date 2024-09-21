@@ -26,7 +26,7 @@ def create_device(
         device_location = Location.objects.get(name=dev_location)
         device_tenant = Tenant.objects.get(name=dev_tenant)
         device_description = f"{dev_description}"
-
+        self.logger.info(f" HERE")
         new_device = Device(
             description=device_description,
             device_type=device_type,
@@ -37,7 +37,7 @@ def create_device(
             status=staging_status,
             tenant=device_tenant,
         )
-
+        self.logger.info(f" OR HERE")
         new_device.validated_save()
 
         return new_device
