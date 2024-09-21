@@ -92,6 +92,7 @@ class ImportDevices(Job):
             except:
                 if device["status"] == "Staged":
                     new_device = create_device(
+                        self,
                         device["name"],
                         device["serial_number"],
                         device["role"],
