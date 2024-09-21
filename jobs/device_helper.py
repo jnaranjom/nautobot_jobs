@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 
 
 def create_device(
-    self, dev_name, dev_serial, dev_role, dev_type, dev_location, dev_tenant, dev_description
+    self, dev_name, dev_serial, dev_role, dev_type, dev_location, dev_tenant
 ):
     """Function to create a new Device
 
@@ -25,10 +25,8 @@ def create_device(
         device_type = DeviceType.objects.get(model=dev_type)
         device_location = Location.objects.get(name=dev_location)
         device_tenant = Tenant.objects.get(name=dev_tenant)
-        device_description = f"{dev_description}"
 
         new_device = Device(
-            description=device_description,
             device_type=device_type,
             location=device_location,
             name=dev_name,

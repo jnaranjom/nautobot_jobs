@@ -99,7 +99,6 @@ class ImportDevices(Job):
                         device["device_type"],
                         device["location"],
                         device["tenant"],
-                        device["description"],
                     )
                     self.logger.info(
                         f"-> New device {new_device.name} created successfully."
