@@ -90,7 +90,7 @@ class ImportDevices(Job):
                 )
                 self.logger.info(f" Device {device['name']} found. Skipping...")
             except:
-                if devices["status"] == "Staged":
+                if device["status"] == "Staged":
                     new_device = create_device(
                         device["name"],
                         device["serial_number"],
