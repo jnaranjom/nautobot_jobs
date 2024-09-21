@@ -4,6 +4,7 @@ from nautobot.apps.jobs import Job, register_jobs
 from nautobot.dcim.models.locations import Location
 from nautobot.dcim.models import Device
 from .location_helper import create_location
+from .device_helper import create_device
 import requests
 import json
 
@@ -89,15 +90,15 @@ class ImportDevices(Job):
                 )
                 self.logger.info(f" Device {device['name']} found. Skipping...")
             except:
-                if devices["status"] == "Staged":
+                if device["status"] == "Staged":
                     new_device = create_device(
+                        self,
                         device["name"],
                         device["serial_number"],
                         device["role"],
                         device["device_type"],
                         device["location"],
                         device["tenant"],
-                        device["description"],
                     )
                     self.logger.info(
                         f"-> New device {new_device.name} created successfully."
