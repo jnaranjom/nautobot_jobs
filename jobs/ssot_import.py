@@ -31,7 +31,7 @@ class ImportLocations(Job):
     def run(self):
         """Main function"""
 
-        locations = requests.get(f"{CMDB_URL}/locations")
+        locations = requests.get(f"{CMDB_URL}/locations", verify=False)
         location_list = locations.json()
 
         for location in location_list:
@@ -80,7 +80,7 @@ class ImportDevices(Job):
     def run(self):
         """Main function"""
 
-        devices = requests.get(f"{CMDB_URL}/devices")
+        devices = requests.get(f"{CMDB_URL}/devices", verify=False)
         device_list = devices.json()
 
         for device in device_list:
