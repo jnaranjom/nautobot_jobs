@@ -41,6 +41,6 @@ Country:
 | Name | Description | Dependencies |
 | --- | --- | --- |
 | SSoT Import Locations | Pull locations via API from CMDB | |
-| SSoT Import Devices | Pull Devices via API from CMDB | |
+| SSoT Import Devices | Pull devices via API from CMDB | |
 | Set MGMT IP | Job to connect a device to a Management Switch and set an IP address in the Management network | Existing management prefix with corresponding role set |
 | Deploy Small Branch | For a existing branch site, deploy required settings to model the branch network | |
