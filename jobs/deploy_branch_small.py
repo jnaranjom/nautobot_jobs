@@ -16,8 +16,8 @@ from .cable_helper import connect_cable_endpoints
 from .status_helper import find_status_uuid
 from .ipaddress_helper import create_ipaddr
 
-#TODO: Add validation for device types and interfaces
-#TODO: Add VLANs and Prefixes required for the deployment type
+# TODO: Add validation for device types and interfaces
+# TODO: Add VLANs and Prefixes required for the deployment type
 
 
 class DeployBranchSmall(Job):

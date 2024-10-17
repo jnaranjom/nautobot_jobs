@@ -8,8 +8,7 @@ from .device_helper import create_device
 import requests
 import json
 
-#CMDB_URL = "http://192.168.2.245:8000/api/v1"
-CMDB_URL = "https://52.91.63.181:5000/api/v1"
+CMDB_URL = "http://192.168.2.201:8000/api/v1"
 
 
 class ImportLocations(Job):
