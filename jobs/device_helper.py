@@ -11,13 +11,23 @@ from django.core.exceptions import ValidationError
 def create_device(
     self, dev_name, dev_serial, dev_role, dev_type, dev_location, dev_tenant
 ):
-    """Function to create a new Device
+    """Function to create a new Device.
 
     Args:
+        dev_name (str): The name of the device.
+        dev_serial (str): The serial number of the device.
+        dev_role (str): The role of the device.
+        dev_type (str): The type/model of the device.
+        dev_location (str): The location where the device is situated.
+        dev_tenant (str): The tenant to which the device belongs.
 
     Returns:
+        new_device: The newly created Device object.
 
+    Raises:
+        AbortTransaction: If the device creation fails due to a validation error.
     """
+
     try:
 
         staging_status = find_status_uuid("Staged")
