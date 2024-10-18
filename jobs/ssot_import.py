@@ -56,7 +56,7 @@ class ImportLocations(Job):
                             location["parent"],
                         )
                         self.logger.info(
-                            "-> New location %s created successfully.",
+                            "## New location %s created successfully.",
                             location["name"],
                         )
                     else:
@@ -105,7 +105,7 @@ class ImportDevices(Job):
                         device["tenant"],
                     )
                     self.logger.info(
-                        "-> New device %s created successfully.", device["name"]
+                        "## New device %s created successfully.", device["name"]
                     )
 
                 else:
