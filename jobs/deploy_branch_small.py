@@ -46,11 +46,8 @@ class DeployBranchSmall(Job):
         """Main function"""
 
         branch_devices = Device.objects.filter(location=branch_location)
-
         router_role = Role.objects.get(name="branch:edge:router")
-
         switch_role = Role.objects.get(name="branch:access:switch")
-
         planned_status = find_status_uuid("Planned")
         active_status = find_status_uuid("Active")
 
