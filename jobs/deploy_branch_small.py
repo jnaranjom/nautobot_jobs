@@ -53,7 +53,7 @@ class DeployBranchSmall(Job):
 
         for device in branch_devices:
             self.logger.info(
-                f"Finding device type and available interfaces for: {device.name}."
+                "Finding device type and available interfaces for: %s", device["name"]
             )
             if device.role == router_role:
                 edge_router = device
@@ -68,7 +68,9 @@ class DeployBranchSmall(Job):
 
                 except Exception as err:
                     self.logger.info(
-                        f"Unable to find available interfaces (Planned Status) in {device.name}."
+                        "Unable to find available interfaces (Planned Status) in %s. Error: %s",
+                        device["name"],
+                        err,
                     )
                     raise
 
@@ -85,18 +87,23 @@ class DeployBranchSmall(Job):
 
                 except Exception as err:
                     self.logger.info(
-                        f"Unable to find available interfaces (Planned Status) in {device.name}."
+                        "Unable to find available interfaces (Planned Status) in %s. Error: %s",
+                        device["name"],
+                        err,
                     )
                     raise
 
             else:
-                self.logger.info(f"Unable to find device type for {device.name}.")
+                self.logger.info("Unable to find device type for %s.", device["name"])
 
         # Update interfaces between router and switch
         try:
             self.logger.info(
-                f"""Connect: {edge_router.name} interface: {router_interface} <--->
-                    {access_switch.name} interface: {switch_interface}"""
+                "Connect: %s interface: %s <--> %s interface: %s",
+                edge_router["name"],
+                router_interface,
+                access_switch["name"],
+                switch_interface,
             )
 
             router_interface.status = active_status
@@ -111,7 +118,9 @@ class DeployBranchSmall(Job):
 
         except Exception as err:
             self.logger.info(
-                f"Unable to connect {edge_router.name} with {access_switch.name}."
+                "Unable to connect %s with %s.",
+                edge_router["name"],
+                access_switch["name"],
             )
             raise
 
@@ -123,13 +132,17 @@ class DeployBranchSmall(Job):
 
         except Exception as err:
             self.logger.info(
-                f"Unable to find available interfaces (Planned Status) in {isp_router.name}."
+                "Unable to find available interfaces (Planned Status) in %s.",
+                isp_router["name"],
             )
             raise
 
         self.logger.info(
-            f"""Connect: {edge_router.name} interface: {router_isp_interface} <--->
-                {isp_router.name} interface: {isp_router_interface.name}"""
+            "Connect: %s interface: %s <--> %s interface: %s",
+            edge_router["name"],
+            router_isp_interface,
+            isp_router["name"],
+            isp_router_interface["name"],
         )
 
         # Allocate IPs and connect interfaces between router and ISP router
@@ -148,7 +161,7 @@ class DeployBranchSmall(Job):
 
         except Exception as err:
             self.logger.info(
-                f"Unable to connect {edge_router.name} with {isp_router.name}"
+                "Unable to connect %s with %s", edge_router["name"], isp_router["name"]
             )
             raise
 
@@ -159,7 +172,7 @@ class DeployBranchSmall(Job):
         site_vlans = edge_router.location.vlans.all().reverse()
 
         for prefix in site_prefixes:
-            self.logger.info(f"  Create subinterface for VLAN: {str(prefix.vlan.vid)}")
+            self.logger.info("  Create subinterface for VLAN: %s", str(prefix.vlan.vid))
             int_id = f"{router_interface.name}.{str(prefix.vlan.vid)}"
 
             interface_ip_address = create_ipaddr(prefix)
@@ -215,11 +228,11 @@ class DeployBranchSmall(Job):
 
         # Setup Switch access interfaces
 
-        self.logger.info(f"Setup switch {access_switch.name} access interfaces:")
+        self.logger.info("Setup switch %s access interfaces:", access_switch["name"])
 
         try:
             for idx, switch_access_interface in enumerate(switch_access_interfaces):
-                self.logger.info(f"  Interface: {switch_access_interface.name}")
+                self.logger.info("  Interface: %s", switch_access_interface["name"])
                 switch_access_interface.mode = "access"
                 switch_access_interface.description = (
                     f"VLAN::{site_vlans[idx].name}::{site_vlans[idx].vid}"
@@ -229,7 +242,7 @@ class DeployBranchSmall(Job):
 
         except Exception as err:
             self.logger.info(
-                f"Unable to set VLANS on {access_switch.name} access ports."
+                "Unable to set VLANS on %s access ports.", access_switch["name"]
             )
             raise
 
