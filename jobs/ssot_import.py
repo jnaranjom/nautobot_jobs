@@ -35,15 +35,19 @@ class ImportLocations(Job):
 
         for location in location_list:
             if location["location_type"] not in ["Country", "State", "City"]:
-                self.logger.info(" Checking Location: %s", location["name"])
-                try:
-                    validate_location = Location.objects.get(
-                        name=location["name"],
-                        tenant__name=location["tenant"],
-                        parent__name=location["parent"],
-                    )
+
+                self.logger.info(" Import Location: %s", location["name"])
+
+                validate_location = Location.objects.filter(
+                    name=location["name"],
+                    tenant__name=location["tenant"],
+                    parent__name=location["parent"],
+                ).first()
+
+                if validate_location:
                     self.logger.info("-> Location %s found", location["name"])
-                except:
+
+                else:
                     if location["status"] == "Staging":
                         new_location = create_location(
                             location["name"],
@@ -53,7 +57,7 @@ class ImportLocations(Job):
                         )
                         self.logger.info(
                             "-> New location %s created successfully.",
-                            new_location["name"],
+                            location["name"],
                         )
                     else:
                         self.logger.info(
@@ -87,7 +91,9 @@ class ImportDevices(Job):
 
         for device in device_list:
             self.logger.info(" Import Device: %s", device["name"])
+
             if not Device.objects.filter(name=device["name"]).exists():
+
                 if device["status"] == "Staged":
                     new_device = create_device(
                         self,
@@ -99,8 +105,9 @@ class ImportDevices(Job):
                         device["tenant"],
                     )
                     self.logger.info(
-                        "-> New device %s created successfully.", new_device["name"]
+                        "-> New device %s created successfully.", device["name"]
                     )
+
                 else:
                     self.logger.info(
                         " New device %s not ready for onboarding. Current status: %s",
@@ -109,4 +116,6 @@ class ImportDevices(Job):
                     )
             else:
                 self.logger.info("-> Device %s already exists", device["name"])
+
+
 register_jobs(ImportLocations, ImportDevices)
