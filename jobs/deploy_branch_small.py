@@ -35,16 +35,19 @@ class DeployBranchSmall(Job):
     name = "Deploy Devices on small branch"
     description = "Job to deploy devices on a new branch in Nautobot"
     dryrun_default = True
+    has_sensitive_variables = False
+    approval_required = False
+    read_only = False
+    hidden = False
+    soft_time_limit = 300
+    time_limit = 600
 
     def run(self, branch_location, isp_router, wan_prefix):
         """Main function"""
 
         branch_devices = Device.objects.filter(location=branch_location)
-
         router_role = Role.objects.get(name="branch:edge:router")
-
         switch_role = Role.objects.get(name="branch:access:switch")
-
         planned_status = find_status_uuid("Planned")
         active_status = find_status_uuid("Active")
 

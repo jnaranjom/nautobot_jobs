@@ -1,12 +1,12 @@
 """ JOB TO IMPORT OBJECTS FROM CMDB """
 
+import requests
 from nautobot.apps.jobs import Job, register_jobs
 from nautobot.dcim.models.locations import Location
 from nautobot.dcim.models import Device
 from .location_helper import create_location
 from .device_helper import create_device
-import requests
-import json
+
 
 CMDB_URL = "http://192.168.2.201:8000/api/v1"
 
@@ -30,19 +30,19 @@ class ImportLocations(Job):
     def run(self):
         """Main function"""
 
-        locations = requests.get(f"{CMDB_URL}/locations", verify=False)
+        locations = requests.get(f"{CMDB_URL}/locations", verify=False, timeout=10)
         location_list = locations.json()
 
         for location in location_list:
             if location["location_type"] not in ["Country", "State", "City"]:
-                self.logger.info(f" Checking Location: {location['name']}")
+                self.logger.info(" Checking Location: %s", location["name"])
                 try:
                     validate_location = Location.objects.get(
                         name=location["name"],
                         tenant__name=location["tenant"],
                         parent__name=location["parent"],
                     )
-                    self.logger.info(f"-> Location {location['name']} found")
+                    self.logger.info("-> Location %s found", location["name"])
                 except:
                     if location["status"] == "Staging":
                         new_location = create_location(
@@ -52,11 +52,14 @@ class ImportLocations(Job):
                             location["parent"],
                         )
                         self.logger.info(
-                            f"-> New location {new_location.name} created successfully."
+                            "-> New location %s created successfully.",
+                            new_location["name"],
                         )
                     else:
                         self.logger.info(
-                            f" New location {location['name']} not ready for onboarding. Current status: {location['status']}"
+                            " New location %s not ready for onboarding. Current status: %s",
+                            location["name"],
+                            location["status"],
                         )
 
 
@@ -79,16 +82,16 @@ class ImportDevices(Job):
     def run(self):
         """Main function"""
 
-        devices = requests.get(f"{CMDB_URL}/devices", verify=False)
+        devices = requests.get(f"{CMDB_URL}/devices", verify=False, timeout=10)
         device_list = devices.json()
 
         for device in device_list:
-            self.logger.info(f" Checking Device: {device['name']}")
+            self.logger.info(" Checking Device: %s", device["name"])
             try:
                 validate_device = Device.objects.get(
                     name=device["name"],
                 )
-                self.logger.info(f" Device {device['name']} found. Skipping...")
+                self.logger.info(" Device %s found. Skipping...", device["name"])
             except:
                 if device["status"] == "Staged":
                     new_device = create_device(
@@ -101,11 +104,13 @@ class ImportDevices(Job):
                         device["tenant"],
                     )
                     self.logger.info(
-                        f"-> New device {new_device.name} created successfully."
+                        "-> New device %s created successfully.", new_device["name"]
                     )
                 else:
                     self.logger.info(
-                        f" New device {device['name']} not ready for onboarding. Current status: {device['status']}"
+                        " New device %s not ready for onboarding. Current status: %s",
+                        device["name"],
+                        device["status"],
                     )
 
 
