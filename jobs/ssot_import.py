@@ -87,12 +87,9 @@ class ImportDevices(Job):
 
         for device in device_list:
             self.logger.info(" Checking Device: %s", device["name"])
-            try:
-                validate_device = Device.objects.get(
-                    name=device["name"],
-                )
+            if Device.objects.filter(name=device["name"]).exists():
                 self.logger.info(" Device %s found. Skipping...", device["name"])
-            except:
+            else:
                 if device["status"] == "Staged":
                     new_device = create_device(
                         self,
