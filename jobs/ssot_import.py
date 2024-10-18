@@ -86,10 +86,8 @@ class ImportDevices(Job):
         device_list = devices.json()
 
         for device in device_list:
-            self.logger.info(" Checking Device: %s", device["name"])
-            if Device.objects.filter(name=device["name"]).exists():
-                self.logger.info(" Device %s found. Skipping...", device["name"])
-            else:
+            self.logger.info(" Import Device: %s", device["name"])
+            if not Device.objects.filter(name=device["name"]).exists():
                 if device["status"] == "Staged":
                     new_device = create_device(
                         self,
@@ -109,6 +107,6 @@ class ImportDevices(Job):
                         device["name"],
                         device["status"],
                     )
-
-
+            else:
+                self.logger.info("-> Device %s already exists", device["name"])
 register_jobs(ImportLocations, ImportDevices)
